@@ -4,8 +4,9 @@
 # SISTEMA DE GESTÃO DE ESTOQUE E VENCIMENTO
 # ---Interface Login (Todos os componentes do Login estão nesta classe)---
 
-from PyQt5.QtWidgets import QWidget, QLabel, QFormLayout, QLineEdit, QPushButton
-from PyQt5.QtCore import Qt
+# --- Import PyQt5
+from PyQt5.QtWidgets import QWidget, QLabel, QLayout, QFormLayout, QLineEdit, QPushButton
+from PyQt5.QtCore import Qt, QRect
 from PyQt5.QtGui import QPixmap
 
 class Login(QWidget):

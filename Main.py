@@ -22,6 +22,7 @@ class Main(QMainWindow):
         self.setWindowTitle("SISTEMA DE GESTÃO DE ESTOQUE E VENCIMENTO")
         self.setWindowState(Qt.WindowMaximized)
         self.setWindowIcon(QIcon("logo.png"))
+        self.statusBar().showMessage("Bem Vindo")
         self.show()
     def setWidgets(self):
         self.central_widget = QStackedWidget()
