@@ -16,6 +16,7 @@ class Login(QWidget):
         self.setWidgets()
         self.setLayoutLogin()
     def setWidgets(self):
+        '''Cria os Widgets da tela de login'''
         self.logo = QLabel()
         self.logo.setPixmap(QPixmap("logo.png"))
         self.logo.setAlignment(Qt.AlignHCenter|Qt.AlignTop)
@@ -25,8 +26,9 @@ class Login(QWidget):
         self.lbl_esqueceu_senha = QLabel("Esqueceu a senha?")
         self.btn_entrar = QPushButton("Entrar")
     def setLayoutLogin(self):
+        '''Posiciona os Widgets da tela de login'''
         self.layout_form = QFormLayout()
-        margin_hor = (self.parent.screen.geometry().width()*0.4)
+        margin_hor = (self.parent.screen.geometry().width()*0.4)#Valor base para centralizar o formulario
         self.layout_form.setContentsMargins(margin_hor,100,margin_hor,0)
         self.layout_form.addRow(self.logo)
         self.layout_form.addRow("CPF", self.edit_cpf)
