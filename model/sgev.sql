@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS tipoConta (
 CREATE TABLE IF NOT EXISTS usuario (
 	id_usuario INT NOT NULL AUTO_INCREMENT,
 	id_tipo INT NOT NULL,
-	cpf VARCHAR(11) NOT NULL,
+	cpf VARCHAR(11) NOT NULL UNIQUE,
     numero_cracha VARCHAR(50) NOT NULL,
     nome VARCHAR(30) NOT NULL,
     sobrenome VARCHAR(30) NOT NULL,
@@ -44,4 +44,4 @@ CREATE TABLE IF NOT EXISTS produto (
     CONSTRAINT produto_fk_categoria FOREIGN KEY(id_categoria) REFERENCES categoriaProduto(id_categoria)
 );
 INSERT INTO tipoConta (descricao) VALUES("Administrador"),("Gerente"),("Estoquista");
-INSERT INTO usuario (id_tipo,cpf,numero_cracha,nome,sobrenome,passwd) VALUES (1,"11409036677","123456","Mário","Fernandes","123456");
+INSERT INTO usuario (id_tipo,cpf,numero_cracha,nome,sobrenome,passwd) VALUES (2,"11409036677","123456","Mário","Fernandes","123456");
