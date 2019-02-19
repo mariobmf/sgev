@@ -25,6 +25,7 @@ class Login(QWidget):
         self.edit_password.setEchoMode(QLineEdit.Password)
         self.lbl_esqueceu_senha = QLabel("Esqueceu a senha?")
         self.btn_entrar = QPushButton("Entrar")
+        self.btn_entrar.setAutoDefault(True)
     def setLayoutLogin(self):
         '''Posiciona os Widgets da tela de login'''
         self.layout_form = QFormLayout()

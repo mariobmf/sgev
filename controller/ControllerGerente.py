@@ -4,15 +4,23 @@
 # SISTEMA DE GESTÃO DE ESTOQUE E VENCIMENTO
 # ---Funções da área do gerente---
 
-# --- Import PyQt5
-from PyQt5.QtWidgets import QWidget, QAction, QLabel, QVBoxLayout
+from controller.Controller import Controller
+from controller.Usuario import Usuario
 
-class ControllerGerente():
+class ControllerGerente(Controller):
     '''Todas funcções e ações da área do gerente estão nesta classe'''
     def __init__(self, parent):
-        self.parent = parent
-    def deconectar(self):
-        '''Desconecta o usuário atual, redireciona o sistema para a tela de login'''
-        self.parent.startInterfaceLogin()#Carrega a tela de Login
-        self.parent.setMenus()#Configura o Menu da Tela Inicial
-        
+        self.area_gerente = parent# variavel usada para acessar a classe AreaGerente
+        super().__init__(self.area_gerente)
+    def showCadastraEstoquista(self):
+        self.area_gerente.conteudo_central.addWidget(self.area_gerente.cadastro_estoquista)
+        self.area_gerente.conteudo_central.setCurrentWidget(self.area_gerente.cadastro_estoquista)
+    def cadastrarEstoquista(self):
+        cpf = self.area_gerente.cadastro_estoquista.edit_cpf.text()
+        num_cracha = self.area_gerente.cadastro_estoquista.edit_num_cracha.text()
+        nome = self.area_gerente.cadastro_estoquista.edit_nome.text()
+        sobrenome = self.area_gerente.cadastro_estoquista.edit_sobrenome.text()
+        id_conta = 3#Valor padrão para uma conta do tipo Estoquista
+        estoquista = Usuario(cpf, cpf, num_cracha, nome, sobrenome, id_conta)
+        if(estoquista.cadastraUsuario()):
+            self.area_gerente.cadastro_estoquista.showMessageSucesso()

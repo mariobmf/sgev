@@ -1,0 +1,2 @@
+pyinstaller --onedir --windowed --name=sgev --distpath="C:\py\teste" Main.py
+Copiar logo.png para pasta do aplicativo

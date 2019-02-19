@@ -5,34 +5,40 @@
 # ---Interface principal (inicia o sistema, classe main será a base para todas as outra interfaces)---
 
 # ---Import Pyqt5
-from PyQt5.QtWidgets import QApplication, QMainWindow, QAction,QStackedWidget, QSizePolicy, QLabel, QMessageBox
+from PyQt5.QtWidgets import (QApplication, QMainWindow, QAction,
+                            QStackedWidget, QSizePolicy, QLabel, QMessageBox, QStatusBar)
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QIcon, QScreen
+from PyQt5.QtGui import QIcon #QScreen
 # ---Import necessario para funcionamento do Pyqt5
 import sys
 # ---Import Pacotes do sistema
 from controller.Usuario import Usuario
 from view.Login import Login
-from view.AreaGerente import AreaGerente
+from model.Bd import Bd
 class Main(QMainWindow):
     def __init__(self, parent=None):
         super().__init__()
+        bd = Bd()
+        #if(Bd().connectBd()):
         self.screen = QApplication.primaryScreen()
         self.main_menu = self.menuBar()
         self.setWidgets()
         self.startInterfaceLogin()
         self.setSettings()
         self.setMenus()
+        #else:
+         #   QMessageBox.warning(self, "Erro", "Erro com o Banco de Dados, verifique o servidor de banco de dados", QMessageBox.Ok)
+          #  self.close
     def setSettings(self):
         '''Configura a aparencia da Janela principal'''
         self.setWindowTitle("SISTEMA DE GESTÃO DE ESTOQUE E VENCIMENTO")
         self.setMinimumSize(self.screen.geometry().width()-50,self.screen.geometry().height()-50)
         self.setWindowState(Qt.WindowMaximized)
         self.setWindowIcon(QIcon("logo.png"))
-        lbl_status1 = QLabel("Bem Vindo")
-        lbl_status2 = QLabel("Versão 1.0")
-        self.statusBar().addWidget(lbl_status1)
-        self.statusBar().addPermanentWidget(lbl_status2)
+        self.status_bar = QStatusBar(self)
+        self.setStatusBar(self.status_bar)
+        self.status_bar.addWidget(QLabel("Bem Vindo"))
+        self.status_bar.addPermanentWidget(QLabel("Versão 1.0"))
         self.show()
     def setMenus(self):
         '''Configura o menubar da tela inicial'''
@@ -66,16 +72,25 @@ class Main(QMainWindow):
         msg_sobre.exec_()
     def conectar(self):
         '''Ação do botão entrar da tela de login'''
-        usuario = Usuario(self.login.edit_cpf.text(), self.login.edit_password.text())
-        if(usuario.autenticaUsuario()):
-            usuario.getDadosUsuario()
-            self.rota = usuario.getRota(self)#Recebe o Widget que será carregado
+        self.usuario = Usuario(self.login.edit_cpf.text(), self.login.edit_password.text())
+        if(self.usuario.autenticaUsuario()):
+            if self.usuario.id_conta == 1:
+                from view.AreaAdmin import AreaAdmin
+                self.rota = AreaAdmin(self)
+            elif self.usuario.id_conta == 2:
+                from view.AreaGerente import AreaGerente
+                self.rota = AreaGerente(self)                    
+            elif self.usuario.id_conta == 3:
+                from view.AreaEstoquista import AreaEstoquista
+                self.rota = AreaEstoquista(self)
+            else:
+                QMessageBox.warning(self, "Conta", "Conta do usuário não cadastrada", QMessageBox.Ok)
             self.central_widget.addWidget(self.rota)#Adiciona o widget no centralWidget
             self.central_widget.setCurrentWidget(self.rota)#Torna o widget principal
             self.central_widget.removeWidget(self.login)#remove o widget Login
             del self.login #Deleta a instancia da classe Login
         else:
-            QMessageBox.warning(self, "Cliente", "Cliente não cadastrado", QMessageBox.Ok)
+            QMessageBox.warning(self, "Cliente", "Usuário não cadastrado", QMessageBox.Ok)
     
 if __name__ == '__main__':
     root = QApplication(sys.argv)

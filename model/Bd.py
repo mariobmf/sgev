@@ -13,6 +13,7 @@ class Bd():
         '''Retorna uma conexao com o banco de dados'''
         try:
             con = mysql.connector.connect(**self.config)
+            return(con)
         except mysql.connector.Error as erro:
             if erro.errno == errorcode.ER_ACCESS_DENIED_ERROR:
                 print("Erro com nome de usuário ou senha")
@@ -20,4 +21,5 @@ class Bd():
                 print("Banco de Dados não existe")
             else:
                 print(erro)
-        return(con)
+        #finally:
+         #   del con

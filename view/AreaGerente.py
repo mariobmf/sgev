@@ -5,25 +5,27 @@
 # ---Interface da área do genrete (Menus da área do gerente)---
 
 # --- Import PyQt5
-from PyQt5.QtWidgets import QWidget, QAction, QLabel, QVBoxLayout
+from PyQt5.QtWidgets import QWidget, QAction, QStackedWidget, QHBoxLayout
 from controller.ControllerGerente import ControllerGerente
-
+#Import das View
+from view.TrocaSenha import TrocaSenha
+from view.CadastroEstoquista import CadastroEstoquista
 class AreaGerente(QWidget):
     '''Todos componentes graficos da área do gerente estão nesta classe'''
     def __init__(self, parent=None):
         super().__init__()
-        self.parent = parent
-        self.controller = ControllerGerente(self.parent)
+        self.main_class = parent#Variavel usada para acessar a classe principal
+        self.controller = ControllerGerente(self)
         self.setMenus()
         self.setWidgets()
         self.setLayoutLogin()
     def setMenus(self):
         '''Altera as opções do menubar para as necessidades do gerente'''
-        self.parent.main_menu.clear()
+        self.main_class.main_menu.clear()
         #cria novas opções
-        menu_cadastro = self.parent.main_menu.addMenu("Cadastro")
-        menu_relatorios = self.parent.main_menu.addMenu("Relatórios")
-        menu_sobre = self.parent.main_menu.addMenu("Sobre")
+        menu_cadastro = self.main_class.main_menu.addMenu("Cadastro")
+        menu_relatorios = self.main_class.main_menu.addMenu("Relatórios")
+        menu_sobre = self.main_class.main_menu.addMenu("Sobre")
         #---cria as ações do menu
         #-Menu de Cadastro
         act_cadastro_estoquista = QAction("Cadastrar Estoquista", self)
@@ -34,8 +36,10 @@ class AreaGerente(QWidget):
         menu_cadastro.addAction(act_troca_senha)
         menu_cadastro.addAction(act_desconectar)
         menu_cadastro.addAction(act_sair)
-        act_sair.triggered.connect(self.parent.close)
+        act_cadastro_estoquista.triggered.connect(self.controller.showCadastraEstoquista)
+        act_troca_senha.triggered.connect(self.controller.showTrocaSenha)
         act_desconectar.triggered.connect(self.controller.deconectar)
+        act_sair.triggered.connect(self.main_class.close)
         #-Menu de Relatórios
         act_entra_saida = QAction("Relatório de Entrada e Saída", self)
         act_perdas = QAction("Relatório de Perdas", self)
@@ -47,7 +51,15 @@ class AreaGerente(QWidget):
         menu_relatorios.addAction(act_vencimentos_futuros)
     def setWidgets(self):
         '''Cria os Widgets da tela da área do gerente'''
-        
+        #Cria os telas da área do cliente
+        self.cadastro_estoquista = CadastroEstoquista(self)
+        self.troca_senha = TrocaSenha(self)
+        #Cria o centralWidget da área do cliente
+        self.conteudo_central = QStackedWidget(self)
     def setLayoutLogin(self):
         '''Posiciona os Widgets da tela da área do gerente'''
+        self.layout_conteudo = QHBoxLayout()
+        self.layout_conteudo.addWidget(self.conteudo_central)
+        self.setLayout(self.layout_conteudo)
+        
         
