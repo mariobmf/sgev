@@ -51,12 +51,13 @@ class Usuario(Conta):
             if "con" in locals():
                 con.close()
     def setDadosUsuario(self):
-        '''Retorna uma Lista com os dados do Usuário'''
+        '''Retorna uma Lista com os dados do Usuário e passa esses dados para a instancia do objeto'''
         con = self.bd.connectBd()
         cursor = con.cursor()
         cursor.execute("""SELECT id_conta, numero_cracha, nome, sobrenome 
                         FROM usuario WHERE id_usuario=%s LIMIT 1""",(self.id_usuario,))
         result = cursor.fetchone()
+        con.close()
         self.numero_cracha = result[1]
         self.nome = result[2]
         self.sobrenome = result[3]

@@ -21,5 +21,3 @@ class Bd():
                 print("Banco de Dados não existe")
             else:
                 print(erro)
-        #finally:
-         #   del con

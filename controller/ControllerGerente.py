@@ -6,21 +6,23 @@
 
 from controller.Controller import Controller
 from controller.Usuario import Usuario
+from controller.Produto import Produto
 
 class ControllerGerente(Controller):
     '''Todas funcções e ações da área do gerente estão nesta classe'''
     def __init__(self, parent):
-        self.area_gerente = parent# variavel usada para acessar a classe AreaGerente
-        super().__init__(self.area_gerente)
+        self.parent = parent# variavel usada para acessar a classe AreaGerente
+        super().__init__(self.parent)
+        self.produto = Produto(False)
     def showCadastraEstoquista(self):
-        self.area_gerente.conteudo_central.addWidget(self.area_gerente.cadastro_estoquista)
-        self.area_gerente.conteudo_central.setCurrentWidget(self.area_gerente.cadastro_estoquista)
+        self.parent.conteudo_central.addWidget(self.parent.cadastro_estoquista)
+        self.parent.conteudo_central.setCurrentWidget(self.parent.cadastro_estoquista)
     def cadastrarEstoquista(self):
-        cpf = self.area_gerente.cadastro_estoquista.edit_cpf.text()
-        num_cracha = self.area_gerente.cadastro_estoquista.edit_num_cracha.text()
-        nome = self.area_gerente.cadastro_estoquista.edit_nome.text()
-        sobrenome = self.area_gerente.cadastro_estoquista.edit_sobrenome.text()
+        cpf = self.parent.cadastro_estoquista.edit_cpf.text()
+        num_cracha = self.parent.cadastro_estoquista.edit_num_cracha.text()
+        nome = self.parent.cadastro_estoquista.edit_nome.text()
+        sobrenome = self.parent.cadastro_estoquista.edit_sobrenome.text()
         id_conta = 3#Valor padrão para uma conta do tipo Estoquista
         estoquista = Usuario(cpf, cpf, num_cracha, nome, sobrenome, id_conta)
         if(estoquista.cadastraUsuario()):
-            self.area_gerente.cadastro_estoquista.showMessageSucesso()
+            self.parent.cadastro_estoquista.showMessageSucesso()

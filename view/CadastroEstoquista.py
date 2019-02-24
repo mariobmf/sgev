@@ -28,6 +28,7 @@ class CadastroEstoquista(QWidget):
         self.edit_nome = QLineEdit()
         self.edit_sobrenome = QLineEdit()
         self.btn_cadastrar = QPushButton("Cadastrar")
+        self.btn_cadastrar.setAutoDefault(True)
     def setLayoutCadastro(self):
         '''Posiciona os Widgets da tela da área do gerente'''
         self.layout_form = QFormLayout()

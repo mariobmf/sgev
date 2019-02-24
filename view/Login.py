@@ -5,8 +5,8 @@
 # ---Interface Login (Todos os componentes do Login estão nesta classe)---
 
 # --- Import PyQt5
-from PyQt5.QtWidgets import QWidget, QLabel, QLayout, QHBoxLayout, QFormLayout, QLineEdit, QPushButton
-from PyQt5.QtCore import Qt, QRect
+from PyQt5.QtWidgets import QWidget, QLabel, QFormLayout, QLineEdit, QPushButton
+from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap
 
 class Login(QWidget):

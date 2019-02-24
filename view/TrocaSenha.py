@@ -28,6 +28,7 @@ class TrocaSenha(QWidget):
         self.edit_confirma_nova = QLineEdit()
         self.edit_confirma_nova.setEchoMode(QLineEdit.Password)
         self.btn_salvar = QPushButton("Salvar")
+        self.btn_salvar.setAutoDefault(True)
     def setLayoutCadastro(self):
         '''Posiciona os Widgets da tela da área do gerente'''
         self.layout_form = QFormLayout()

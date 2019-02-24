@@ -5,30 +5,26 @@
 # ---Interface principal (inicia o sistema, classe main será a base para todas as outra interfaces)---
 
 # ---Import Pyqt5
-from PyQt5.QtWidgets import (QApplication, QMainWindow, QAction,
-                            QStackedWidget, QSizePolicy, QLabel, QMessageBox, QStatusBar)
+from PyQt5.QtWidgets import (QApplication, QMainWindow, QWidget, QAction,
+                            QStackedWidget, QLabel, QMessageBox, QStatusBar)
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon #QScreen
 # ---Import necessario para funcionamento do Pyqt5
 import sys
 # ---Import Pacotes do sistema
 from controller.Usuario import Usuario
+from controller.Produto import Produto
 from view.Login import Login
 from model.Bd import Bd
 class Main(QMainWindow):
     def __init__(self, parent=None):
         super().__init__()
-        bd = Bd()
-        #if(Bd().connectBd()):
         self.screen = QApplication.primaryScreen()
         self.main_menu = self.menuBar()
         self.setWidgets()
         self.startInterfaceLogin()
         self.setSettings()
         self.setMenus()
-        #else:
-         #   QMessageBox.warning(self, "Erro", "Erro com o Banco de Dados, verifique o servidor de banco de dados", QMessageBox.Ok)
-          #  self.close
     def setSettings(self):
         '''Configura a aparencia da Janela principal'''
         self.setWindowTitle("SISTEMA DE GESTÃO DE ESTOQUE E VENCIMENTO")
@@ -93,6 +89,18 @@ class Main(QMainWindow):
             QMessageBox.warning(self, "Cliente", "Usuário não cadastrado", QMessageBox.Ok)
     
 if __name__ == '__main__':
+    #bd = Bd()
+    #print(bd.connectBd())
     root = QApplication(sys.argv)
+    #if(Bd().connectBd() != None):
     app = Main()
-    sys.exit(root.exec_())
+    #else:
+     #   app = QWidget()
+      #  erro = QMessageBox(app)
+       # erro.setWindowTitle("Erro")
+        #erro.setIcon(QMessageBox.Warning)
+        #erro.setText("Erro com o Banco de Dados, verifique o servidor de banco de dados")
+        #erro.setStandardButtons(QMessageBox.Ok)
+        #app.show()
+        #print("Erro com o Banco de Dados, verifique o servidor de banco de dados")
+    sys.exit(root.exec_())  

@@ -47,3 +47,14 @@ class Controller():
                 self.parent.troca_senha.showMessageErro()
         else:#Caso a senha digitade esteja errada
             self.parent.troca_senha.showMessageErro()    
+    def showRelatorioSimples(self):
+        '''Exibe um relatorio simples no central widget determinado nos parametros
+            Usado para tela home do gerente e estoquista
+            Informações do relatorio:
+                -Quantidade em Estoque
+                -Produtos vencidos
+                -Produtos que vencem em 30 dias
+                -Produtos que vencem em 60 dias
+        '''
+        self.parent.conteudo_central.addWidget(self.home_gerente)
+        self.parent.conteudo_central.setCurrentWidget(self.home_gerente)
