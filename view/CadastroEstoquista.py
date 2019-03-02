@@ -7,8 +7,6 @@
 # --- Import PyQt5
 from PyQt5.QtWidgets import (QWidget, QFormLayout, QHBoxLayout, 
                             QLineEdit, QPushButton, QGroupBox, QLabel, QMessageBox, QStyle)
-from PyQt5.QtGui import QIcon
-
 
 class CadastroEstoquista(QWidget):
     def __init__(self, parent=None):

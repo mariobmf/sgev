@@ -18,13 +18,13 @@ class RelatorioSimples(QWidget):
     def setWidgets(self):
         '''Cria os Widgets do relatorio'''
         total_produtos = self.parent.controller.produto.getTotalProdutos()
-        self.total_vencidos = None
-        self.total_vencidos_trinta = None
-        self.total_vencidos_sessenta = None
+        total_vencidos = self.parent.controller.produto.getProdutosVencidos()
+        total_vencidos_trinta = self.parent.controller.produto.getVencimentosProximos(30)
+        total_vencidos_sessenta = self.parent.controller.produto.getVencimentosProximos(60)
         self.quantidade = QLabel("Quantidade em Estoque: " + str(total_produtos))
-        self.vencidos = QLabel("Produtos vencidos: ")
-        self.vencidos_trinta = QLabel("Produtos que vencem em 30 dias: ")
-        self.vencidos_sessenta = QLabel("Produtos que vencem em 60 dias: ")
+        self.vencidos = QLabel("Produtos vencidos: " + str(total_vencidos))
+        self.vencidos_trinta = QLabel("Produtos que vencem em 30 dias: " + str(total_vencidos_trinta))
+        self.vencidos_sessenta = QLabel("Produtos que vencem em 60 dias: " + str(total_vencidos_sessenta))
     def setLayoutLogin(self):
         '''Posiciona os Widgets do relatorio'''
         self.layout_linhas = QVBoxLayout()

@@ -6,6 +6,7 @@
 
 # --- Import PyQt5
 from PyQt5.QtWidgets import QWidget, QAction, QStackedWidget, QHBoxLayout
+#import dos controllers
 from controller.ControllerGerente import ControllerGerente
 #Import das View
 from view.TrocaSenha import TrocaSenha

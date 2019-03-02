@@ -9,13 +9,17 @@ from model.Bd import Bd
 
 class Unidade():
     def __init__(self, id_unidade=None, sigla=None, descricao_unidade=None):
+        '''Construtor da Classe, Iniciar o construtor das seguintes maneiras:
+        -Unidade(id_unidade=int) = Quando for preciso consultar ou modificar uma unidade especifica
+        -Unidade(sigla, descricao_unidade) = Quando for cadastrar uma unidade
+        -Unidade(id_unidade=False) = Quando for fazer uma consulta em todos categoria '''
         self.id_unidade = id_unidade
         self.sigla = sigla
         self.descricao_unidade = descricao_unidade
         self.bd = Bd()
         if(self.id_unidade == None):
             self.cadastraUnidade()
-        else:
+        elif(self.id_unidade != False):
             self.setDadosUnidade()
     def cadastraUnidade(self):
         '''Cadastra uma nova Unidade de produto no banco de dados'''
@@ -45,3 +49,11 @@ class Unidade():
         con.close()
         self.sigla = result[0]
         self.descricao_unidade = result[1]
+    def getUnidades(self):
+        '''Retorna uma Lista com os nomes das Unidades'''
+        con = self.bd.connectBd()
+        cursor = con.cursor()
+        cursor.execute("""SELECT id_unidade,descricao FROM unidade ORDER BY descricao ASC""")
+        result = cursor.fetchall()
+        con.close()
+        return result

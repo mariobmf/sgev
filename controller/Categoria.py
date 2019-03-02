@@ -9,7 +9,10 @@ from model.Bd import Bd
 
 class Categoria():
     def __init__(self, id_categoria = None, id_usuario = None, nome = None, descricao_categoria = None, tipo = None):
-        print(id_categoria)
+        '''Construtor da Classe, Iniciar o construtor das seguintes maneiras:
+        -Categoria(id_categoria=int) = Quando for preciso consultar ou modificar uma categoria especifica
+        -Categoria(nome, descricao_categoria, tipo) = Quando for cadastrar uma categoria
+        -Categoria(id_categoria=False) = Quando for fazer uma consulta em todos categoria'''
         self.id_categoria = id_categoria
         self.id_usuario = id_usuario
         self.nome = nome
@@ -17,9 +20,8 @@ class Categoria():
         self.tipo = tipo
         self.bd = Bd()
         if(id_categoria == None):
-            print("Cadastrar")
             self.cadastraCategoria()
-        else:
+        elif(id_categoria != False):
             self.setDadosCategoria()
     def cadastraCategoria(self):
         '''Cadastra uma nova categoria de produto no banco de dados'''
@@ -51,5 +53,11 @@ class Categoria():
         self.nome = result[1]
         self.descricao_categoria = result[2]
         self.tipo = result[3]
-    def getTotalCategoria(self):
-        pass
+    def getCategorias(self):
+        '''Retorna uma Lista com os nomes das Categorias'''
+        con = self.bd.connectBd()
+        cursor = con.cursor()
+        cursor.execute("""SELECT id_categoria, nome FROM categoria ORDER BY nome ASC""")
+        result = cursor.fetchall()
+        con.close()
+        return result

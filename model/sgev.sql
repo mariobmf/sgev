@@ -70,7 +70,10 @@ INSERT INTO unidade (sigla, descricao) VALUES("CX","Caixa"),
 												("SC60","Saca 60Kg"),
 												("UN","Unidade");
 
-INSERT INTO categoria (id_usuario, nome, descricao, tipo) VALUES (1, "Leite", "Leite de Caixa", "Perecível");
+INSERT INTO categoria (id_usuario, nome, descricao, tipo) 
+			VALUES (1, "Leite", "Leite de Caixa", "Perecível"),
+					(1, "Arroz", "Fardo", "Não Perecível"),
+                    (1, "Feijão", "Preto", "Não Perecível");
 INSERT INTO produto (id_categoria,
 					id_unidade,
                     codigo_barras,
@@ -111,4 +114,45 @@ INSERT INTO produto (id_categoria,
                     1,
                     "Estoque",
                     '2019-12-31');
+INSERT INTO produto (id_categoria,
+					id_unidade,
+                    codigo_barras,
+                    lote,
+                    nome,
+                    descricao,
+                    quantidade,
+                    peso,
+                    local_armazenamento,
+                    data_vencimento)
+				VALUES(1,
+					1,
+					"8949849840984064565498",
+					"LT1017",
+					"Leite Ilustre", 
+					"Leite Desnatado 1L",
+					100,
+                    1,
+                    "Estoque",
+                    '2017-12-31');
+INSERT INTO produto (id_categoria,
+					id_unidade,
+                    codigo_barras,
+                    lote,
+                    nome,
+                    descricao,
+                    quantidade,
+                    peso,
+                    local_armazenamento,
+                    data_vencimento)
+				VALUES(1,
+					1,
+					"111111111111111",
+					"LT10191",
+					"Leite Ilustre", 
+					"Leite Desnatado 1L",
+					50,
+                    1,
+                    "Estoque",
+                    '2019-04-20'); 
 SELECT * FROM produto;
+SELECT SUM(quantidade) FROM produto WHERE (data_vencimento > NOW()) AND (data_vencimento < current_date() + interval 30 DAY)

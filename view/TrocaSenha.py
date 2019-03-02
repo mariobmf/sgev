@@ -48,7 +48,7 @@ class TrocaSenha(QWidget):
     def showMessageSucesso(self):
         '''Exibe uma Dialog com a menssagem de sucesso ao trocar a senha'''
         QMessageBox.about(self,"Sucesso",
-                        "Senha trocada com sucesso!")
+                        "Senha alterada com sucesso!")
     def showMessageErro(self):
         '''Exibe uma Dialog com a menssagem de erro ao trocar a senha'''
         QMessageBox.about(self,"Erro",

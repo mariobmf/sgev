@@ -10,14 +10,12 @@ from controller.Categoria import Categoria
 from controller.Unidade import Unidade
 class Produto():
     def __init__(self, id_produto=None, id_categoria=None, id_unidade=None, codigo_barras=None, lote=None,
-                nome=None, descricao_produto=None, unidade=None, quantidade=None, peso=None, 
-                local_armazenamento=None, data_vencimento=None):
+                nome=None, descricao_produto=None, quantidade=None, peso=None, local_armazenamento=None, data_vencimento=None):
         '''Construtor da Classe, Iniciar o construtor das seguintes maneiras:
-        -Quando for preciso consultar ou modificar um produto especifico iniciar a 
-            classe somente com id_produto=int
-        -Quando for cadastrar um produto, informar todos os dados a serem cadastrados e 
-            deixar o id_produto, id_categoria e id_unidade = None
-        -Quando for fazer uma consulta em todos produtos iniciar a classe somente com id_produto = False'''
+        -Produto(id_produto=int) = Quando for preciso consultar ou modificar um produto especifico
+        -Produto(id_produto=None, id_categoria, id_unidade, codigo_barras, lote, nome, descricao_produto, quantidade, peso, 
+                local_armazenamento, data_vencimento) = Quando for cadastrar um produto
+        -Produto(id_produto=False) = Quando for fazer uma consulta em todos produtos'''
         self.id_produto = id_produto
         self.codigo_barras = codigo_barras
         self.lote = lote
@@ -27,15 +25,10 @@ class Produto():
         self.peso = peso
         self.local_armazenamento = local_armazenamento
         self.data_vencimento = data_vencimento
-        #self.total_produtos = None
-        #self.total_vencidos = None
-        #self.total_vencidos_trinta = None
-        #self.total_vencidos_sessenta = None
         self.bd = Bd()
         if(self.id_produto == None):
             self.categoria = Categoria(id_categoria)
             self.unidade = Unidade(id_unidade)
-            self.cadastraProduto()
         elif(self.id_produto != False):
             result = self.setDadosProduto()
     def cadastraProduto(self):
@@ -43,7 +36,7 @@ class Produto():
         try:
             con = self.bd.connectBd()
             cursor = con.cursor()
-            values = (self.id_categoria, self.id_unidade, self.codigo_barras, self.lote, self.nome, 
+            values = (self.categoria.id_categoria, self.unidade.id_unidade, self.codigo_barras, self.lote, self.nome, 
                         self.descricao_produto, self.quantidade, self.peso, self.local_armazenamento, self.data_vencimento)
             cursor.execute("""INSERT INTO produto (id_categoria,
                                                     id_unidade,
@@ -94,4 +87,21 @@ class Produto():
         con.close()
         return result[0]
     def getProdutosVencidos(self):
-        pass
+        '''Retorna o total de produtos vencidos no estoque'''
+        con = self.bd.connectBd()
+        cursor = con.cursor()
+        cursor.execute("""SELECT SUM(quantidade) FROM produto WHERE data_vencimento < NOW()""")
+        result = cursor.fetchone()
+        con.close()
+        return result[0]
+    def getVencimentosProximos(self, qtd_dias):
+        '''Retorna o total de produtos que vencem nos proximos dias
+            - Informar a quantidade de dias para pesquisa'''
+        con = self.bd.connectBd()
+        cursor = con.cursor()
+        cursor.execute("""SELECT SUM(quantidade) FROM produto 
+                        WHERE (data_vencimento > NOW()) 
+                            AND (data_vencimento < current_date() + interval %s DAY)""",(qtd_dias,))
+        result = cursor.fetchone()
+        con.close()
+        return result[0]
