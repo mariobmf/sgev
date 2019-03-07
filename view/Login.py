@@ -21,6 +21,7 @@ class Login(QWidget):
         self.logo.setPixmap(QPixmap("logo.png"))
         self.logo.setAlignment(Qt.AlignHCenter|Qt.AlignTop)
         self.edit_cpf = QLineEdit()
+        self.edit_cpf.setInputMask("999.999.999-99")
         self.edit_password = QLineEdit()
         self.edit_password.setEchoMode(QLineEdit.Password)
         self.lbl_esqueceu_senha = QLabel("Esqueceu a senha?")

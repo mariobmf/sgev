@@ -24,6 +24,10 @@ class ControllerEstoquista(Controller):
     def showHome(self):
         self.parent.conteudo_central.setCurrentWidget(self.parent.home_estoquista)
     def cadastrarProduto(self):
+        '''Cadastra um novo produto no sistema'''
+        if(self.parent.cadastro_produto.verificaCamposVazios()):
+            pass
+        '''
         codigo = self.parent.cadastro_produto.edit_codigo.text()
         lote = self.parent.cadastro_produto.edit_lote.text()
         categoria = self.parent.cadastro_produto.cb_categoria.currentData()
@@ -36,4 +40,4 @@ class ControllerEstoquista(Controller):
         data = self.parent.cadastro_produto.edit_data.text()
         produto = Produto(None, categoria, unidade, codigo, lote, nome, descricao, quantidade, peso, local, data)
         if(produto.cadastraProduto()):
-           self.parent.cadastro_produto.showMessageSucesso()
+           self.parent.cadastro_produto.showMessageSucesso()'''

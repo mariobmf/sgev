@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS produto (
 	id_produto INT NOT NULL AUTO_INCREMENT,
     id_categoria INT NOT NULL,
     id_unidade INT NOT NULL,
-    codigo_barras VARCHAR(30) NOT NULL,
+    codigo_barras VARCHAR(100) NOT NULL,
     lote VARCHAR(30) NOT NULL,
     nome VARCHAR(30) NOT NULL,
     descricao VARCHAR(100) NOT NULL,

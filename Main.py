@@ -68,7 +68,7 @@ class Main(QMainWindow):
         msg_sobre.exec_()
     def conectar(self):
         '''Ação do botão entrar da tela de login'''
-        self.usuario = Usuario(self.login.edit_cpf.text(), self.login.edit_password.text())
+        self.usuario = Usuario(self.formataCpf(self.login.edit_cpf.text()), self.login.edit_password.text())
         if(self.usuario.autenticaUsuario()):
             if self.usuario.id_conta == 1:
                 from view.AreaAdmin import AreaAdmin
@@ -87,7 +87,17 @@ class Main(QMainWindow):
             del self.login #Deleta a instancia da classe Login
         else:
             QMessageBox.warning(self, "Cliente", "Usuário não cadastrado", QMessageBox.Ok)
-    
+    def formataCpf(self, cpf):
+        '''Retorna o CPF formatado(somente Numeros)
+            parametros:
+                cpf - Não formatado ex: 111.222.333-44
+            retorno:
+                cpf - Formatado ex: 11122233344'''
+        cpf_formatado = ""
+        for digito in str(cpf):
+            if digito.isdigit():
+                cpf_formatado += str(digito)
+        return cpf_formatado
 if __name__ == '__main__':
     #bd = Bd()
     #print(bd.connectBd())
