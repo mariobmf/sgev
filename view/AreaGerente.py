@@ -20,7 +20,7 @@ class AreaGerente(QWidget):
         self.controller = ControllerGerente(self)
         self.setCentralWidgets()
         self.setMenus()
-        self.setLayoutLogin()
+        self.setLayoutGerente()
     def setMenus(self):
         '''Altera as opções do menubar para as necessidades do gerente'''
         self.main_class.main_menu.clear()
@@ -62,7 +62,7 @@ class AreaGerente(QWidget):
         #Difine o primeiro widget do centralWidget
         self.conteudo_central.addWidget(self.home_gerente)
         self.conteudo_central.setCurrentWidget(self.home_gerente)
-    def setLayoutLogin(self):
+    def setLayoutGerente(self):
         '''Posiciona os Widgets da tela da área do gerente'''
         self.layout_conteudo = QHBoxLayout()
         self.layout_conteudo.addWidget(self.conteudo_central)

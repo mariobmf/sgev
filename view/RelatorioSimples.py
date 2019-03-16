@@ -14,7 +14,7 @@ class RelatorioSimples(QWidget):
         super().__init__()
         self.parent = parent
         self.setWidgets()
-        self.setLayoutLogin()
+        self.setLayoutRelatorio()
     def setWidgets(self):
         '''Cria os Widgets do relatorio'''
         total_produtos = self.parent.controller.produto.getTotalProdutos()
@@ -25,7 +25,7 @@ class RelatorioSimples(QWidget):
         self.vencidos = QLabel("Produtos vencidos: " + str(total_vencidos))
         self.vencidos_trinta = QLabel("Produtos que vencem em 30 dias: " + str(total_vencidos_trinta))
         self.vencidos_sessenta = QLabel("Produtos que vencem em 60 dias: " + str(total_vencidos_sessenta))
-    def setLayoutLogin(self):
+    def setLayoutRelatorio(self):
         '''Posiciona os Widgets do relatorio'''
         self.layout_linhas = QVBoxLayout()
         self.layout_linhas.addWidget(self.quantidade)

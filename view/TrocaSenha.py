@@ -14,7 +14,7 @@ class TrocaSenha(QWidget):
         self.parent = parent
         self.width = self.parent.main_class.geometry().width()#usada para calcular a margem
         self.setWidgets()
-        self.setLayoutCadastro()
+        self.setLayoutTrocaSenha()
         self.setActionButton()
     def setWidgets(self):
         '''Cria os Widgets da tela da área do gerente'''
@@ -29,7 +29,7 @@ class TrocaSenha(QWidget):
         self.edit_confirma_nova.setEchoMode(QLineEdit.Password)
         self.btn_salvar = QPushButton("Salvar")
         self.btn_salvar.setAutoDefault(True)
-    def setLayoutCadastro(self):
+    def setLayoutTrocaSenha(self):
         '''Posiciona os Widgets da tela da área do gerente'''
         self.layout_form = QFormLayout()
         self.layout_form.setRowWrapPolicy(QFormLayout.WrapAllRows)

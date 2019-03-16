@@ -8,7 +8,7 @@
 from PyQt5.QtWidgets import (QWidget, QFormLayout, QHBoxLayout, QLineEdit, 
                             QPushButton, QGroupBox, QLabel, QMessageBox, QComboBox, QDateEdit)
 from PyQt5.QtCore import QDate, QRegExp
-from PyQt5.QtGui import QRegExpValidator
+from PyQt5.QtGui import QRegExpValidator, QValidator
 
 class CadastroProduto(QWidget):
     def __init__(self, parent=None, categorias=None, unidades=None):
@@ -19,10 +19,11 @@ class CadastroProduto(QWidget):
         self.width = self.parent.main_class.geometry().width()#usada para calcular a margem
         self.categorias = self.parent.controller.categoria.getCategorias()
         self.unidades = self.parent.controller.unidade.getUnidades()
-        self.setStyleSheetForm()
         self.setWidgets()
+        self.setStyleSheetForm()
         self.setLayoutCadastro()
         self.setActionButton()
+        self.connectValidaCampo()
     def setWidgets(self):
         '''Cria os Widgets da tela da área do gerente'''
         self.group_form = QGroupBox("Cadastro de Produto")
@@ -31,6 +32,7 @@ class CadastroProduto(QWidget):
         self.edit_codigo = QLineEdit()
         self.edit_codigo.setValidator(QRegExpValidator(QRegExp("[0-9]{1,99}")))#Valida Numeros inteiros no min 1 digito e no max 99
         self.edit_lote = QLineEdit()
+        #Cria o selectbox e insere os valores do banco de dados no mesmo
         self.cb_categoria = QComboBox()
         for id_categoria, categoria in self.categorias:
             self.cb_categoria.addItem(categoria,id_categoria)
@@ -39,6 +41,7 @@ class CadastroProduto(QWidget):
         self.edit_quantidade = QLineEdit()
         self.edit_quantidade.setValidator(QRegExpValidator(QRegExp("[0-9]{1,20}.{0,1}[0-9]{0,5}")))
         self.cb_unidade = QComboBox()
+        #Cria o selectbox e insere os valores do banco de dados no mesmo
         for id_unidade, unidade in self.unidades:
             self.cb_unidade.addItem(unidade, id_unidade)
         self.edit_peso = QLineEdit()
@@ -85,8 +88,8 @@ class CadastroProduto(QWidget):
         result = QMessageBox.question(self,"Sucesso",
                         "Produto cadastrado com sucesso! \nCadastrar novo produto?", QMessageBox.Yes, QMessageBox.No)
         if(result == QMessageBox.Yes):
-            edits = self.findChildren(QLineEdit)
             self.clearLineEdit()
+            self.setStyleSheetForm()
         else:
             self.clearLineEdit()
             self.parent.controller.showHome()
@@ -108,9 +111,19 @@ class CadastroProduto(QWidget):
                 vazio += 1
         if(vazio > 0):
             return False
-    '''def validaCampo(self):
+        else:
+            return True
+    def validaCampo(self):
+        '''Muda a cor da borda do QLineEdit se ele estiver vazio'''
         campo = self.sender()
-        validator = campo.validator()
-        state = validator.validate(self, campo.text(), 0)
-        if(state == QValidator.Invalid):
-            print("invalido")'''
+        if(campo.text() != ""):
+            campo.setStyleSheet("border-color: green")
+        else:
+            campo.setStyleSheet("border-color: red")
+    def connectValidaCampo(self):
+        '''Conecta todos os campos com a função validaCampo'''
+        edits = self.findChildren(QLineEdit)
+        for edit in edits:
+            edit.textChanged.connect(self.validaCampo)
+                
+

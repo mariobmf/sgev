@@ -23,21 +23,22 @@ class ControllerEstoquista(Controller):
         self.parent.conteudo_central.setCurrentWidget(self.parent.cadastro_produto)
     def showHome(self):
         self.parent.conteudo_central.setCurrentWidget(self.parent.home_estoquista)
+    def showListaProdutos(self):
+        self.parent.conteudo_central.addWidget(self.parent.lista_produtos)
+        self.parent.conteudo_central.setCurrentWidget(self.parent.lista_produtos)
     def cadastrarProduto(self):
         '''Cadastra um novo produto no sistema'''
         if(self.parent.cadastro_produto.verificaCamposVazios()):
-            pass
-        '''
-        codigo = self.parent.cadastro_produto.edit_codigo.text()
-        lote = self.parent.cadastro_produto.edit_lote.text()
-        categoria = self.parent.cadastro_produto.cb_categoria.currentData()
-        nome = self.parent.cadastro_produto.edit_nome.text()
-        descricao = self.parent.cadastro_produto.edit_descricao.text()
-        quantidade = self.parent.cadastro_produto.edit_quantidade.text()
-        unidade = self.parent.cadastro_produto.cb_unidade.currentData()
-        peso = self.parent.cadastro_produto.edit_peso.text()
-        local = self.parent.cadastro_produto.edit_local.text()
-        data = self.parent.cadastro_produto.edit_data.text()
-        produto = Produto(None, categoria, unidade, codigo, lote, nome, descricao, quantidade, peso, local, data)
-        if(produto.cadastraProduto()):
-           self.parent.cadastro_produto.showMessageSucesso()'''
+            codigo = self.parent.cadastro_produto.edit_codigo.text()
+            lote = self.parent.cadastro_produto.edit_lote.text()
+            categoria = self.parent.cadastro_produto.cb_categoria.currentData()
+            nome = self.parent.cadastro_produto.edit_nome.text()
+            descricao = self.parent.cadastro_produto.edit_descricao.text()
+            quantidade = self.parent.cadastro_produto.edit_quantidade.text()
+            unidade = self.parent.cadastro_produto.cb_unidade.currentData()
+            peso = self.parent.cadastro_produto.edit_peso.text()
+            local = self.parent.cadastro_produto.edit_local.text()
+            data = self.parent.cadastro_produto.edit_data.text()
+            produto = Produto(None, categoria, unidade, codigo, lote, nome, descricao, quantidade, peso, local, data)
+            if(produto.cadastraProduto()):
+                self.parent.cadastro_produto.showMessageSucesso()

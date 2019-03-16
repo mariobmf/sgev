@@ -12,6 +12,7 @@ from controller.ControllerEstoquista import ControllerEstoquista
 from view.TrocaSenha import TrocaSenha
 from view.RelatorioSimples import RelatorioSimples
 from view.CadastroProduto import CadastroProduto
+from view.ListaProdutos import ListaProdutos
 class AreaEstoquista(QWidget):
     '''Todos componentes graficos da área do gerente estão nesta classe'''
     def __init__(self, parent=None):
@@ -20,7 +21,7 @@ class AreaEstoquista(QWidget):
         self.controller = ControllerEstoquista(self)
         self.setCentralWidgets()
         self.setMenus()
-        self.setLayoutLogin()
+        self.setLayoutEstoquista()
     def setMenus(self):
         '''Altera as opções do menubar para as necessidades do gerente'''
         self.main_class.main_menu.clear()
@@ -63,18 +64,20 @@ class AreaEstoquista(QWidget):
         menu_produtos.addAction(act_cadastra_categoria)
         menu_produtos.addAction(act_lista_categoria)
         act_cadastra_produto.triggered.connect(self.controller.showCadastroProduto)
+        act_lista_produto.triggered.connect(self.controller.showListaProdutos)
     def setCentralWidgets(self):
         '''Cria o Widget Central da tela da área do gerente'''
         #Cria os telas da área do cliente
         self.home_estoquista = RelatorioSimples(self)#Um relatorio simples é usado como tela inicial
         self.troca_senha = TrocaSenha(self)
         self.cadastro_produto = CadastroProduto(self)
+        self.lista_produtos = ListaProdutos(self)
         #Cria o centralWidget da área do cliente
         self.conteudo_central = QStackedWidget(self)
         #Difine o primeiro widget do centralWidget
         self.conteudo_central.addWidget(self.home_estoquista)
         self.conteudo_central.setCurrentWidget(self.home_estoquista)
-    def setLayoutLogin(self):
+    def setLayoutEstoquista(self):
         '''Posiciona os Widgets da tela da área do gerente'''
         self.layout_conteudo = QHBoxLayout()
         self.layout_conteudo.addWidget(self.conteudo_central)

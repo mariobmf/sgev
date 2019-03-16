@@ -105,3 +105,19 @@ class Produto():
         result = cursor.fetchone()
         con.close()
         return result[0]
+    def getProdutos(self):
+        '''Retorna a lista com todos os produtos salvos no banco de dados
+            Retorno:
+               id_categoria,id_unidade,codigo_barras,lote,nome,descricao,quantidade,peso,local_armazenamento,data_vencimento 
+        '''
+        con = self.bd.connectBd()
+        cursor = con.cursor()
+        cursor.execute("""SELECT codigo_barras,lote,
+                                id_categoria,nome,
+                                descricao,id_unidade,
+                                quantidade,peso,
+                                local_armazenamento,
+                                data_vencimento FROM produto""")        
+        result = cursor.fetchall()
+        con.close()
+        return result
