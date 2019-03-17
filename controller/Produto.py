@@ -112,7 +112,7 @@ class Produto():
         '''
         con = self.bd.connectBd()
         cursor = con.cursor()
-        cursor.execute("""SELECT codigo_barras,lote,
+        cursor.execute("""SELECT id_produto,codigo_barras,lote,
                                 id_categoria,nome,
                                 descricao,id_unidade,
                                 quantidade,peso,

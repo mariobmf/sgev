@@ -42,3 +42,5 @@ class ControllerEstoquista(Controller):
             produto = Produto(None, categoria, unidade, codigo, lote, nome, descricao, quantidade, peso, local, data)
             if(produto.cadastraProduto()):
                 self.parent.cadastro_produto.showMessageSucesso()
+    def editProduto(self,id_produto):
+        print(id_produto)
