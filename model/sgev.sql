@@ -155,4 +155,5 @@ INSERT INTO produto (id_categoria,
                     "Estoque",
                     '2019-04-20'); 
 SELECT * FROM produto;
+DELETE FROM produto WHERE id_produto = 2;
 SELECT SUM(quantidade) FROM produto WHERE (data_vencimento > NOW()) AND (data_vencimento < current_date() + interval 30 DAY)

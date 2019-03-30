@@ -59,7 +59,19 @@ class Produto():
     def alteraProduto(self):
         pass
     def deletaProduto(self):
-        pass
+        '''Deleta o produto instanciado no momento'''
+        print("Função:", self.id_produto)
+        try:
+            con = self.bd.connectBd()
+            cursor = con.cursor()
+            cursor.execute("DELETE FROM produto WHERE id_produto = %s",(self.id_produto,))
+            con.commit()
+            return True
+        except Exception as error:
+            print(error)
+        finally:
+            if "con" in locals():
+                con.close()
     def setDadosProduto(self):
         '''Busca os dados do produto no banco de dados e passa esses dados para a instancia do objeto'''
         con = self.bd.connectBd()

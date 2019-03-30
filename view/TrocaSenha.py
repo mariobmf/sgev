@@ -1,24 +1,24 @@
 # -*- coding: utf-8 -*-
 # Autor: Mário Fernandes
-# 06/02/2019
+# 23/02/2019 - Alterado
+# VERSÂO 2.0
 # SISTEMA DE GESTÃO DE ESTOQUE E VENCIMENTO
-# ---Formulario para troca de senha de todos usuários---
+# ---Janela com Formulario para troca de senha de todos usuários---
 
 # --- Import PyQt5
-from PyQt5.QtWidgets import (QWidget, QFormLayout, QHBoxLayout, 
-                            QLineEdit, QPushButton, QGroupBox, QLabel, QMessageBox, QStyle)
-
-class TrocaSenha(QWidget):
+from PyQt5.QtWidgets import (QWidget, QFormLayout, 
+                            QLineEdit, QPushButton, QLabel, QMessageBox)
+from view.BaseSubWindow import BaseSubWindow
+class TrocaSenha(BaseSubWindow):
     def __init__(self, parent=None):
-        super().__init__()
+        super().__init__("Troca de Senha", 250, 200)
         self.parent = parent
-        self.width = self.parent.main_class.geometry().width()#usada para calcular a margem
         self.setWidgets()
         self.setLayoutTrocaSenha()
         self.setActionButton()
     def setWidgets(self):
         '''Cria os Widgets da tela da área do gerente'''
-        self.group_form = QGroupBox("Trocar Senha")
+        self.conteudo = QWidget()
         self.lbl_title = QLabel("DADOS NECESSARIOS")
         self.lbl_title.setStyleSheet("QLabel{font:bold}")
         self.edit_senha_antiga = QLineEdit()
@@ -33,18 +33,15 @@ class TrocaSenha(QWidget):
         '''Posiciona os Widgets da tela da área do gerente'''
         self.layout_form = QFormLayout()
         self.layout_form.setRowWrapPolicy(QFormLayout.WrapAllRows)
-        self.layout_form.setContentsMargins(self.width*0.4, 100, self.width*0.4, 0)
         self.layout_form.addRow(self.lbl_title)
         self.layout_form.addRow("Senha antiga",self.edit_senha_antiga)
         self.layout_form.addRow("Nova senha",self.edit_senha_nova)
         self.layout_form.addRow("Confirmar senha",self.edit_confirma_nova)
         self.layout_form.addRow(self.btn_salvar)
-        self.group_form.setLayout(self.layout_form)
-        self.layout_conteudo = QHBoxLayout()
-        self.layout_conteudo.addWidget(self.group_form)
-        self.setLayout(self.layout_conteudo)
+        self.conteudo.setLayout(self.layout_form)
+        self.setWidget(self.conteudo)
     def setActionButton(self):
-        self.btn_salvar.clicked.connect(self.parent.controller.trocarSenha)
+        self.btn_salvar.clicked.connect(self.parent.trocarSenha)
     def showMessageSucesso(self):
         '''Exibe uma Dialog com a menssagem de sucesso ao trocar a senha'''
         QMessageBox.about(self,"Sucesso",

@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 # Autor: Mário Fernandes
-# 06/02/2019
+# 23/02/2019 - Alterado
+# VERSÂO 2.0
 # SISTEMA DE GESTÃO DE ESTOQUE E VENCIMENTO
 # ---Interface principal (inicia o sistema, classe main será a base para todas as outra interfaces)---
 
 # ---Import Pyqt5
 from PyQt5.QtWidgets import (QApplication, QMainWindow, QWidget, QAction,
-                            QStackedWidget, QLabel, QMessageBox, QStatusBar)
+                            QStackedWidget, QMdiArea, QLabel, QMessageBox, QStatusBar)
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon #QScreen
 # ---Import necessario para funcionamento do Pyqt5
@@ -14,17 +15,17 @@ import sys
 # ---Import Pacotes do sistema
 from controller.Usuario import Usuario
 from controller.Produto import Produto
+from controller.Menu import Menu
 from view.Login import Login
 from model.Bd import Bd
 class Main(QMainWindow):
     def __init__(self, parent=None):
         super().__init__()
         self.screen = QApplication.primaryScreen()
-        self.main_menu = self.menuBar()
-        self.setWidgets()
+        self.menu = Menu(self)
         self.startInterfaceLogin()
         self.setSettings()
-        self.setMenus()
+        self.menu.setMenusPrincipal()
     def setSettings(self):
         '''Configura a aparencia da Janela principal'''
         self.setWindowTitle("SISTEMA DE GESTÃO DE ESTOQUE E VENCIMENTO")
@@ -35,24 +36,11 @@ class Main(QMainWindow):
         self.setStatusBar(self.status_bar)
         self.status_bar.addWidget(QLabel("Bem Vindo"))
         self.status_bar.addPermanentWidget(QLabel("Versão 1.0"))
-        self.show()
-    def setMenus(self):
-        '''Configura o menubar da tela inicial'''
-        self.main_menu.clear()
-        menu_arquivo = self.main_menu.addMenu("Arquivo")
-        menu_sobre = self.main_menu.addMenu("Ajuda")
-        act_sair = QAction("Fechar",self)
-        act_ajuda = QAction("Sobre", self)
-        act_sair.triggered.connect(self.close)
-        act_ajuda.triggered.connect(self.showSobre)
-        menu_arquivo.addAction(act_sair)
-        menu_sobre.addAction(act_ajuda)
-    def setWidgets(self):
-        '''Configura o Widget central da Janela principal'''
+        self.show() 
+    def startInterfaceLogin(self):
+        '''Configura o Widget central da Janela principal e Inicia as Interfaces necessarias para a tela inicial'''
         self.central_widget = QStackedWidget()
         self.setCentralWidget(self.central_widget)
-    def startInterfaceLogin(self):
-        '''Inicia as Interfaces necessarias para a tela inicial'''
         self.login = Login(self)#Instancia a classe Login com a interface
         self.central_widget.addWidget(self.login)#Adiciona a insterface no centralWidget
         self.central_widget.setCurrentWidget(self.login)#Torna a interface Principal
@@ -63,7 +51,7 @@ class Main(QMainWindow):
         msg_sobre.setWindowIcon(QIcon("logo.png"))
         msg_sobre.setWindowTitle("Sobre")
         msg_sobre.setText("Sistema de Gestão de Estoque e Vencimento")
-        msg_sobre.setInformativeText("Versão 1.0")
+        msg_sobre.setInformativeText("Versão 2.0")
         msg_sobre.setDefaultButton(QMessageBox.Ok)
         msg_sobre.exec_()
     def conectar(self):
@@ -71,19 +59,20 @@ class Main(QMainWindow):
         self.usuario = Usuario(self.formataCpf(self.login.edit_cpf.text()), self.login.edit_password.text())
         if(self.usuario.autenticaUsuario()):
             if self.usuario.id_conta == 1:
-                from view.AreaAdmin import AreaAdmin
-                self.rota = AreaAdmin(self)
+                pass
             elif self.usuario.id_conta == 2:
-                from view.AreaGerente import AreaGerente
-                self.rota = AreaGerente(self)                    
+                from controller.ControllerGerente import ControllerGerente
+                self.controller = ControllerGerente(self)
+                self.menu.setMenusGerente()         
             elif self.usuario.id_conta == 3:
-                from view.AreaEstoquista import AreaEstoquista
-                self.rota = AreaEstoquista(self)
+                from controller.ControllerEstoquista import ControllerEstoquista
+                self.controller = ControllerEstoquista(self)
+                self.menu.setMenusEstoquista()
             else:
                 QMessageBox.warning(self, "Conta", "Conta do usuário não cadastrada", QMessageBox.Ok)
-            self.central_widget.addWidget(self.rota)#Adiciona o widget no centralWidget
-            self.central_widget.setCurrentWidget(self.rota)#Torna o widget principal
-            self.central_widget.removeWidget(self.login)#remove o widget Login
+            self.mdi_area = QMdiArea()
+            self.setCentralWidget(self.mdi_area)
+            del self.central_widget #Deleta o centralWidget atual para inicialização da MDIArea 
             del self.login #Deleta a instancia da classe Login
         else:
             QMessageBox.warning(self, "Cliente", "Usuário não cadastrado", QMessageBox.Ok)

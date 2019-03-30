@@ -7,6 +7,7 @@
 from controller.Controller import Controller
 from controller.Usuario import Usuario
 from controller.Produto import Produto
+from view.CadastroEstoquista import CadastroEstoquista
 
 class ControllerGerente(Controller):
     '''Todas funcções e ações da área do gerente estão nesta classe'''
@@ -15,14 +16,17 @@ class ControllerGerente(Controller):
         super().__init__(self.parent)
         self.produto = Produto(False)
     def showCadastraEstoquista(self):
-        self.parent.conteudo_central.addWidget(self.parent.cadastro_estoquista)
-        self.parent.conteudo_central.setCurrentWidget(self.parent.cadastro_estoquista)
+        self.sub_cadastro_estoquista = CadastroEstoquista(self)
+        self.parent.mdi_area.addSubWindow(self.sub_cadastro_estoquista)
+        self.sub_cadastro_estoquista.show()
     def cadastrarEstoquista(self):
-        cpf = self.parent.cadastro_estoquista.edit_cpf.text()
-        num_cracha = self.parent.cadastro_estoquista.edit_num_cracha.text()
-        nome = self.parent.cadastro_estoquista.edit_nome.text()
-        sobrenome = self.parent.cadastro_estoquista.edit_sobrenome.text()
+        cpf = self.sub_cadastro_estoquista.edit_cpf.text()
+        num_cracha = self.sub_cadastro_estoquista.edit_num_cracha.text()
+        nome = self.sub_cadastro_estoquista.edit_nome.text()
+        sobrenome = self.sub_cadastro_estoquista.edit_sobrenome.text()
         id_conta = 3#Valor padrão para uma conta do tipo Estoquista
         estoquista = Usuario(cpf, cpf, num_cracha, nome, sobrenome, id_conta)
         if(estoquista.cadastraUsuario()):
-            self.parent.cadastro_estoquista.showMessageSucesso()
+            self.sub_cadastro_estoquista.showMessageSucesso()
+            self.parent.mdi_area.removeSubWindow(self.sub_cadastro_estoquista)#remove a subwindow da tela
+            del self.sub_cadastro_estoquista#deleta a instancia da subwindow

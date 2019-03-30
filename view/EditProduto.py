@@ -12,7 +12,7 @@ from PyQt5.QtGui import QRegExpValidator
 
 from view.BaseSubWindow import BaseSubWindow
 
-class CadastroProduto(BaseSubWindow):
+class EditProduto(BaseSubWindow):
     def __init__(self, parent=None, categorias=None, unidades=None):
         '''Inicia a classe com os seguintes parametros:
             -parent: classe que instanciou esta classe'''
@@ -126,5 +126,3 @@ class CadastroProduto(BaseSubWindow):
         edits = self.findChildren(QLineEdit)
         for edit in edits:
             edit.textChanged.connect(self.validaCampo)
-                
-
