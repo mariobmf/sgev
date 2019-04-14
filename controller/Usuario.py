@@ -52,29 +52,40 @@ class Usuario(Conta):
                 con.close()
     def setDadosUsuario(self):
         '''Retorna uma Lista com os dados do Usuário e passa esses dados para a instancia do objeto'''
-        con = self.bd.connectBd()
-        cursor = con.cursor()
-        cursor.execute("""SELECT id_conta, numero_cracha, nome, sobrenome 
-                        FROM usuario WHERE id_usuario=%s LIMIT 1""",(self.id_usuario,))
-        result = cursor.fetchone()
-        con.close()
-        self.numero_cracha = result[1]
-        self.nome = result[2]
-        self.sobrenome = result[3]
-        super().__init__(result[0])#Inicia a conta com o id_conta
+        try:
+            con = self.bd.connectBd()
+            cursor = con.cursor()
+            cursor.execute("""SELECT id_conta, numero_cracha, nome, sobrenome 
+                            FROM usuario WHERE id_usuario=%s LIMIT 1""",(self.id_usuario,))
+            result = cursor.fetchone()
+            #con.close()
+            self.numero_cracha = result[1]
+            self.nome = result[2]
+            self.sobrenome = result[3]
+            super().__init__(result[0])#Inicia a conta com o id_conta
+        except Exception as error:
+            print(error)
+        finally:
+            if "con" in locals():
+                con.close()
     def autenticaUsuario(self):
         '''Retorna verdadeiro caso o usuário esteja cadastrado'''
-        bd = Bd()
-        con = bd.connectBd()
-        cursor = con.cursor()
-        values=(self.cpf,self.password)
-        cursor.execute("SELECT id_usuario FROM usuario WHERE %s=cpf AND %s=passwd LIMIT 1",values)
-        result = cursor.fetchone()
-        con.close()
-        if(result == None):
-            return False   
-        else:
-            self.id_usuario = result[0]
-            self.setDadosUsuario()
-            return True
-        
+        try:
+            bd = Bd()
+            con = bd.connectBd()
+            cursor = con.cursor()
+            values=(self.cpf,self.password)
+            cursor.execute("SELECT id_usuario FROM usuario WHERE %s=cpf AND %s=passwd LIMIT 1",values)
+            result = cursor.fetchone()
+            #con.close()
+            if(result == None):
+                return False   
+            else:
+                self.id_usuario = result[0]
+                self.setDadosUsuario()
+                return True
+        except Exception as error:
+            print(error)
+        finally:
+            if "con" in locals():
+                con.close()

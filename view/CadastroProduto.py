@@ -40,13 +40,13 @@ class CadastroProduto(BaseSubWindow):
         self.edit_nome = QLineEdit()
         self.edit_descricao = QLineEdit()
         self.edit_quantidade = QLineEdit()
-        self.edit_quantidade.setValidator(QRegExpValidator(QRegExp("[0-9]{1,20}.{0,1}[0-9]{0,5}")))
+        self.edit_quantidade.setValidator(QRegExpValidator(QRegExp("\-?\d+\.\d+")))
         self.cb_unidade = QComboBox()
         #Cria o selectbox e insere os valores do banco de dados no mesmo
         for id_unidade, unidade in self.unidades:
             self.cb_unidade.addItem(unidade, id_unidade)
         self.edit_peso = QLineEdit()
-        self.edit_peso.setValidator(QRegExpValidator(QRegExp("[0-9]{1,20}.{0,1}[0-9]{0,5}")))
+        self.edit_peso.setValidator(QRegExpValidator(QRegExp("\-?\d+\.\d+")))
         self.edit_local = QLineEdit()
         self.edit_data = QDateEdit(QDate.currentDate())
         self.edit_data.setDisplayFormat("yyyy/MM/dd")
@@ -60,7 +60,8 @@ class CadastroProduto(BaseSubWindow):
                                         border-color: Gray;
                                         padding: 2px}
                             QLineEdit:focus, QComboBox:focus{border-color:blue}
-                            QPushButton{padding:5px}""")
+                            QPushButton{padding:5px}
+                            QDateEdit{padding:3px}""")
     def setLayoutCadastro(self):
         '''Posiciona os Widgets da tela da área do gerente'''
         self.layout_form = QFormLayout()
@@ -73,7 +74,7 @@ class CadastroProduto(BaseSubWindow):
         self.layout_form.addRow("Descriçao",self.edit_descricao)
         self.layout_form.addRow("Quantidade",self.edit_quantidade)
         self.layout_form.addRow("Unidade",self.cb_unidade)
-        self.layout_form.addRow("Peso",self.edit_peso)
+        self.layout_form.addRow("Peso(kg)",self.edit_peso)
         self.layout_form.addRow("Local de Armazenamento",self.edit_local)
         self.layout_form.addRow("Data de Vencimento",self.edit_data)
         self.layout_form.addRow(self.btn_cadastrar)
@@ -127,4 +128,3 @@ class CadastroProduto(BaseSubWindow):
         for edit in edits:
             edit.textChanged.connect(self.validaCampo)
                 
-

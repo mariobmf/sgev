@@ -14,6 +14,7 @@ from controller.Unidade import Unidade
 from view.CadastroProduto import CadastroProduto
 from view.ListaProdutos import ListaProdutos
 from view.EditProduto import EditProduto
+from view.ViewProduto import ViewProduto
 
 class ControllerEstoquista(Controller):
     '''Todas funcções e ações da área do gerente estão nesta classe'''
@@ -53,12 +54,66 @@ class ControllerEstoquista(Controller):
                 if(self.sub_cadastro_produto.showMessageSucesso() == False):
                     self.parent.mdi_area.removeSubWindow(self.sub_cadastro_produto)#remove a subwindow da tela
                     del self.sub_cadastro_produto#deleta a instancia da subwindow
+                    try:
+                        self.sub_lista_produto.updateTable()
+                    except:
+                        pass
+    def editarProduto(self):
+        '''Edita os dados do produto'''
+        if(self.sub_edit_produto.verificaCamposVazios()):
+            codigo = self.sub_edit_produto.edit_codigo.text()
+            lote = self.sub_edit_produto.edit_lote.text()
+            categoria = self.sub_edit_produto.cb_categoria.currentData()
+            nome = self.sub_edit_produto.edit_nome.text()
+            descricao = self.sub_edit_produto.edit_descricao.text()
+            quantidade = self.sub_edit_produto.edit_quantidade.text()
+            unidade = self.sub_edit_produto.cb_unidade.currentData()
+            peso = self.sub_edit_produto.edit_peso.text()
+            local = self.sub_edit_produto.edit_local.text()
+            data = self.sub_edit_produto.edit_data.text()
+            produto = Produto(self.sub_edit_produto.produto[0]) 
+            if(produto.alteraProduto(categoria, unidade, codigo, lote, nome, descricao, quantidade, peso, local, data)):
+                self.sub_edit_produto.showMessageSucesso()#Mostra um dialogo se sucesso
+                self.parent.mdi_area.removeSubWindow(self.sub_edit_produto)#remove a subwindow da tela
+                del self.sub_edit_produto#deleta a instancia da subwindow
+                self.sub_lista_produto.updateTable()#Chama a função para atualizar os dados da tabela
     def editProduto(self,id_produto):
-        pass
+        '''Pega os dados do produto e chama a tela de edição'''
+        produto = Produto(id_produto)
+        info_produto = [produto.id_produto, 
+                        produto.codigo_barras, 
+                        produto.lote,
+                        produto.categoria.nome,
+                        produto.nome,
+                        produto.descricao_produto,
+                        produto.quantidade,
+                        produto.unidade.sigla,
+                        produto.peso,
+                        produto.local_armazenamento,
+                        produto.data_vencimento]
+        self.sub_edit_produto = EditProduto(self,info_produto)
+        self.parent.mdi_area.addSubWindow(self.sub_edit_produto)
+        self.sub_edit_produto.show()
     def viewProduto(self,id_produto):
-        pass
+        '''Exibe as informações do produto em uma janela de formulario'''
+        produto = Produto(id_produto)
+        info_produto = [produto.id_produto, 
+                        produto.codigo_barras, 
+                        produto.lote,
+                        produto.categoria.nome,
+                        produto.nome,
+                        produto.descricao_produto,
+                        produto.quantidade,
+                        produto.unidade.sigla,
+                        produto.peso,
+                        produto.local_armazenamento,
+                        produto.data_vencimento]
+        self.sub_view_produto = ViewProduto(self,info_produto)
+        self.parent.mdi_area.addSubWindow(self.sub_view_produto)
+        self.sub_view_produto.show()
     def deleteProduto(self,id_produto):
+        '''Deleta o produto'''
         produto_del = Produto(id_produto)
         if(produto_del.deletaProduto() == True):
             del produto_del
-            return True   
+            self.sub_lista_produto.updateTable()   

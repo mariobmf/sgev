@@ -65,3 +65,14 @@ class Controller():
         '''
         self.parent.conteudo_central.addWidget(self.home_gerente)
         self.parent.conteudo_central.setCurrentWidget(self.home_gerente)
+    def formataCpf(self, cpf):
+        '''Retorna o CPF formatado(somente Numeros)
+            parametros:
+                cpf - Não formatado ex: 111.222.333-44
+            retorno:
+                cpf - Formatado ex: 11122233344'''
+        cpf_formatado = ""
+        for digito in str(cpf):
+            if digito.isdigit():
+                cpf_formatado += str(digito)
+        return cpf_formatado

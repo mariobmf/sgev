@@ -11,7 +11,7 @@ from PyQt5.QtWidgets import (QWidget, QFormLayout,
 from view.BaseSubWindow import BaseSubWindow
 class TrocaSenha(BaseSubWindow):
     def __init__(self, parent=None):
-        super().__init__("Troca de Senha", 250, 200)
+        super().__init__("Troca de Senha", 250, 500)
         self.parent = parent
         self.setWidgets()
         self.setLayoutTrocaSenha()

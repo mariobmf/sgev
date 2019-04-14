@@ -6,7 +6,7 @@
 
 # --- Import PyQt5
 from PyQt5.QtWidgets import (QWidget, QPushButton, QTableWidget, QTableWidgetItem, 
-                            QVBoxLayout, QHBoxLayout, QLabel, QAbstractItemView, QSizePolicy)
+                            QVBoxLayout, QHBoxLayout, QLabel, QAbstractItemView)
 from PyQt5.QtGui import QIcon
 from controller.Controller import Controller
 from view.BaseSubWindow import BaseSubWindow
@@ -23,7 +23,7 @@ class ListaProdutos(BaseSubWindow):
         '''Cria os Widgets da tabela'''
         self.produtos = self.parent.produto.getProdutos()#Pega os produtos salvos no sistema
         self.table = QTableWidget(len(self.produtos),11)#Cria a tabela com a quantidade de linhas conforme os produtos e 11 colunas
-        header_label = """Ação-Código de Barras-Lote-Categoria-Nome-Descrição-Unidade-Quantidade-Peso-Local de Armazenamento-Data de Vencimento"""#Lista usada para formar os titulos da tabela
+        header_label = """Ação-Código de Barras-Lote-Categoria-Nome-Descrição-Unidade-Quantidade-Peso(Kg)-Local de Armazenamento-Data de Vencimento"""#Lista usada para formar os titulos da tabela
         self.table.setHorizontalHeaderLabels(header_label.split('-'))#Interpreta a lista de titulos e seta os titulos da tabela
         self.setValuesTable()#Coloca os valores na tabela
         self.table.resizeColumnsToContents()#As colunas ficam com a largura do tamanho do conteudo
@@ -31,15 +31,6 @@ class ListaProdutos(BaseSubWindow):
     def setLayoutTable(self):
         '''Posiciona os Widgets da tabela'''
         self.conteudo = QWidget()
-        #self.btn_cadastrar = QPushButton("Cadastrar Produto")
-        #self.btn_atualizar = QPushButton("Atualizar Tabela")
-        #self.btn_cadastrar.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
-        #self.btn_atualizar.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
-        #self.btn_cadastrar.clicked.connect(self.parent.showCadastroProduto)
-        #self.layout_button = QHBoxLayout()
-        #self.layout_button.addWidget(self.btn_cadastrar)
-        #self.layout_button.addWidget(self.btn_atualizar)
-        #self.layout_group.addLayout(self.layout_button)
         self.layout_group = QVBoxLayout()
         self.layout_group.addWidget(self.table)
         self.conteudo.setLayout(self.layout_group)
@@ -55,7 +46,15 @@ class ListaProdutos(BaseSubWindow):
                 coluna += 1
             coluna = 1
             linha += 1
-
+    def updateTable(self):
+        '''Atualiza as linhas da tabela'''
+        self.produtos = self.parent.produto.getProdutos()#Pega os produtos salvos no sistema
+        self.table.clearContents()
+        if(len(self.produtos) > self.table.rowCount()):
+            self.table.insertRow(int(len(self.produtos) - self.table.rowCount()))
+        elif(len(self.produtos) < self.table.rowCount()):
+            self.table.removeRow(int(self.table.rowCount() - len(self.produtos)))
+        self.setValuesTable()
 #------Classe usada para gerar dois botões dentro de uma celula------
 class ButtonGroup(QWidget):
     def __init__(self, parent, id_produto, linha):
@@ -79,13 +78,13 @@ class ButtonGroup(QWidget):
         self.setLayout(self.layout_btn_group)
     def actionButtonEdit(self):
         '''Aciona o metodo editProduto e passa o id do produto'''
-        print("Id:",self.id_produto," Linha:",self.linha)
+        #print("Id:",self.id_produto," Linha:",self.linha)
         self.parent.parent.editProduto(self.id_produto)#primeiro parent(class ListaProdutos) e o segundo parent(AreaEstoquista)
     def actionButtonView(self):
         '''Aciona o metodo viewProduto e passa o id do produto'''
-        print("Id:",self.id_produto," Linha:",self.linha)
+        #print("Id:",self.id_produto," Linha:",self.linha)
         self.parent.parent.viewProduto(self.id_produto)#primeiro parent(class ListaProdutos) e o segundo parent(AreaEstoquista)
     def actionButtonDelete(self):
         '''Aciona o metodo deleteProduto e passa o id do produto'''
-        if(self.parent.parent.deleteProduto(self.id_produto)):#primeiro parent(class ListaProdutos) e o segundo parent(AreaEstoquista)
-            self.parent.table.removeRow(self.parent.table.currentRow())
+        self.parent.parent.deleteProduto(self.id_produto)#primeiro parent(class ListaProdutos) e o segundo parent(AreaEstoquista)
+        

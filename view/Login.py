@@ -5,7 +5,7 @@
 # ---Interface Login (Todos os componentes do Login estão nesta classe)---
 
 # --- Import PyQt5
-from PyQt5.QtWidgets import QWidget, QLabel, QFormLayout, QLineEdit, QPushButton
+from PyQt5.QtWidgets import QWidget, QLabel, QFormLayout, QHBoxLayout, QLineEdit, QPushButton, QSizePolicy
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap
 
@@ -26,10 +26,13 @@ class Login(QWidget):
         self.edit_password.setEchoMode(QLineEdit.Password)
         self.lbl_esqueceu_senha = QLabel("Esqueceu a senha?")
         self.btn_entrar = QPushButton("Entrar")
+        #self.btn_entrar.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
         self.btn_entrar.setAutoDefault(True)
     def setLayoutLogin(self):
         '''Posiciona os Widgets da tela de login'''
         self.layout_form = QFormLayout()
+        #self.layout_button = QHBoxLayout()
+        #self.layout_button.addWidget(self.btn_entrar)
         margin_hor = (self.parent.screen.geometry().width()*0.4)#Valor base para centralizar o formulario
         self.layout_form.setContentsMargins(margin_hor,100,margin_hor,0)
         self.layout_form.addRow(self.logo)

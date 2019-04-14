@@ -9,7 +9,7 @@
 from PyQt5.QtWidgets import (QApplication, QMainWindow, QWidget, QAction,
                             QStackedWidget, QMdiArea, QLabel, QMessageBox, QStatusBar)
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QIcon #QScreen
+from PyQt5.QtGui import QIcon 
 # ---Import necessario para funcionamento do Pyqt5
 import sys
 # ---Import Pacotes do sistema

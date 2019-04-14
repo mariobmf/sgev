@@ -20,7 +20,7 @@ class ControllerGerente(Controller):
         self.parent.mdi_area.addSubWindow(self.sub_cadastro_estoquista)
         self.sub_cadastro_estoquista.show()
     def cadastrarEstoquista(self):
-        cpf = self.sub_cadastro_estoquista.edit_cpf.text()
+        cpf = self.formataCpf(self.sub_cadastro_estoquista.edit_cpf.text())
         num_cracha = self.sub_cadastro_estoquista.edit_num_cracha.text()
         nome = self.sub_cadastro_estoquista.edit_nome.text()
         sobrenome = self.sub_cadastro_estoquista.edit_sobrenome.text()

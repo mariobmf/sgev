@@ -56,11 +56,33 @@ class Produto():
         finally:
             if "con" in locals():
                 con.close()
-    def alteraProduto(self):
-        pass
+    def alteraProduto(self, categoria, unidade, codigo, lote, nome, descricao, quantidade, peso, local, data):
+        '''Altera as informações do produto no banco de dados'''
+        try:
+            con = self.bd.connectBd()
+            cursor = con.cursor()
+            values = (categoria, unidade, codigo, lote, nome, descricao,
+                        quantidade, peso, local, data, self.id_produto)
+            cursor.execute("""UPDATE produto SET id_categoria = %s,
+                                                    id_unidade = %s,
+                                                    codigo_barras = %s,
+                                                    lote = %s,
+                                                    nome = %s,
+                                                    descricao = %s,
+                                                    quantidade = %s,
+                                                    peso = %s,
+                                                    local_armazenamento = %s,
+                                                    data_vencimento = %s 
+                                WHERE id_produto = %s""",values)
+            con.commit()
+            return True
+        except Exception as error:
+            print("Erro: %s" % error)
+        finally:
+            if "con" in locals():
+                con.close()
     def deletaProduto(self):
         '''Deleta o produto instanciado no momento'''
-        print("Função:", self.id_produto)
         try:
             con = self.bd.connectBd()
             cursor = con.cursor()
@@ -74,62 +96,94 @@ class Produto():
                 con.close()
     def setDadosProduto(self):
         '''Busca os dados do produto no banco de dados e passa esses dados para a instancia do objeto'''
-        con = self.bd.connectBd()
-        cursor = con.cursor()
-        cursor.execute("""SELECT id_categoria, id_unidade, codigo_barras, lote, nome, descricao, quantidade, peso, local_armazenamento, data_vencimento 
-                        FROM produto WHERE id_produto=%s LIMIT 1""",(self.id_produto,))
-        result = cursor.fetchone()
-        con.close()
-        self.categoria = Categoria(result[0])
-        self.unidade = Unidade(result[1])
-        self.codigo_barras = result[2]
-        self.lote = result[3]
-        self.nome = result[4]
-        self.descricao_produto = result[5]
-        self.quantidade = result[6]
-        self.peso = result[7]
-        self.local_armazenamento = result[8]
-        self.data_vencimento = result[9]
+        try:
+            con = self.bd.connectBd()
+            cursor = con.cursor()
+            cursor.execute("""SELECT id_categoria, id_unidade, codigo_barras, lote, nome, descricao, quantidade, peso, local_armazenamento, data_vencimento 
+                            FROM produto WHERE id_produto=%s LIMIT 1""",(self.id_produto,))
+            result = cursor.fetchone()
+            #con.close()
+            self.categoria = Categoria(result[0])
+            self.unidade = Unidade(result[1])
+            self.codigo_barras = result[2]
+            self.lote = result[3]
+            self.nome = result[4]
+            self.descricao_produto = result[5]
+            self.quantidade = result[6]
+            self.peso = result[7]
+            self.local_armazenamento = result[8]
+            self.data_vencimento = result[9]
+        except Exception as error:
+            print(error)
+        finally:
+            if "con" in locals():
+                con.close()
     def getTotalProdutos(self):
         '''Retorna o total de produtos cadastrado no estoque'''
-        con = self.bd.connectBd()
-        cursor = con.cursor()
-        cursor.execute("""SELECT SUM(quantidade) FROM produto""")
-        result = cursor.fetchone()
-        con.close()
-        return result[0]
+        try:
+            con = self.bd.connectBd()
+            cursor = con.cursor()
+            cursor.execute("""SELECT SUM(quantidade) FROM produto""")
+            result = cursor.fetchone()
+            #con.close()
+            return result[0]
+        except Exception as error:
+            print(error)
+        finally:
+            if "con" in locals():
+                con.close()
     def getProdutosVencidos(self):
         '''Retorna o total de produtos vencidos no estoque'''
-        con = self.bd.connectBd()
-        cursor = con.cursor()
-        cursor.execute("""SELECT SUM(quantidade) FROM produto WHERE data_vencimento < NOW()""")
-        result = cursor.fetchone()
-        con.close()
-        return result[0]
+        try:
+            con = self.bd.connectBd()
+            cursor = con.cursor()
+            cursor.execute("""SELECT SUM(quantidade) FROM produto WHERE data_vencimento < NOW()""")
+            result = cursor.fetchone()
+            #con.close()
+            return result[0]
+        except Exception as error:
+            print(error)
+        finally:
+            if "con" in locals():
+                con.close()
     def getVencimentosProximos(self, qtd_dias):
         '''Retorna o total de produtos que vencem nos proximos dias
             - Informar a quantidade de dias para pesquisa'''
-        con = self.bd.connectBd()
-        cursor = con.cursor()
-        cursor.execute("""SELECT SUM(quantidade) FROM produto 
-                        WHERE (data_vencimento > NOW()) 
-                            AND (data_vencimento < current_date() + interval %s DAY)""",(qtd_dias,))
-        result = cursor.fetchone()
-        con.close()
-        return result[0]
+        try:
+            con = self.bd.connectBd()
+            cursor = con.cursor()
+            cursor.execute("""SELECT SUM(quantidade) FROM produto 
+                            WHERE (data_vencimento > NOW()) 
+                                AND (data_vencimento < current_date() + interval %s DAY)""",(qtd_dias,))
+            result = cursor.fetchone()
+            #con.close()
+            return result[0]
+        except Exception as error:
+            print(error)
+        finally:
+            if "con" in locals():
+                con.close()
     def getProdutos(self):
         '''Retorna a lista com todos os produtos salvos no banco de dados
             Retorno:
                id_categoria,id_unidade,codigo_barras,lote,nome,descricao,quantidade,peso,local_armazenamento,data_vencimento 
         '''
-        con = self.bd.connectBd()
-        cursor = con.cursor()
-        cursor.execute("""SELECT id_produto,codigo_barras,lote,
-                                id_categoria,nome,
-                                descricao,id_unidade,
-                                quantidade,peso,
-                                local_armazenamento,
-                                data_vencimento FROM produto""")        
-        result = cursor.fetchall()
-        con.close()
-        return result
+        try:
+            con = self.bd.connectBd()
+            cursor = con.cursor()
+            cursor.execute("""SELECT p.id_produto,p.codigo_barras,p.lote,
+                                    c.nome,p.nome,
+                                    p.descricao,u.descricao,
+                                    p.quantidade,p.peso,
+                                    p.local_armazenamento,
+                                    p.data_vencimento
+                                FROM produto p, categoria c, unidade u
+                                WHERE p.id_categoria = c.id_categoria AND p.id_unidade = u.id_unidade""")        
+            result = cursor.fetchall()
+            #con.close()
+            return result
+        except Exception as error:
+            print(error)
+        finally:
+            if "con" in locals():
+                con.close()

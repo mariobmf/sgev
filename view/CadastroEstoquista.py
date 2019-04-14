@@ -10,7 +10,7 @@ from PyQt5.QtWidgets import (QWidget, QFormLayout,
 from view.BaseSubWindow import BaseSubWindow
 class CadastroEstoquista(BaseSubWindow):
     def __init__(self, parent=None):
-        super().__init__("Cadastro do Estoquista", 250, 200)
+        super().__init__("Cadastro do Estoquista", 300, 500)
         self.parent = parent
         self.setWidgets()
         self.setLayoutCadastro()
@@ -21,6 +21,7 @@ class CadastroEstoquista(BaseSubWindow):
         self.lbl_title = QLabel("DADOS DO ESTOQUISTA")
         self.lbl_title.setStyleSheet("QLabel{font:bold}")
         self.edit_cpf = QLineEdit()
+        self.edit_cpf.setInputMask("999.999.999-99")
         self.edit_num_cracha = QLineEdit()
         self.edit_nome = QLineEdit()
         self.edit_sobrenome = QLineEdit()

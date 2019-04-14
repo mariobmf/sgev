@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS produto (
     lote VARCHAR(30) NOT NULL,
     nome VARCHAR(30) NOT NULL,
     descricao VARCHAR(100) NOT NULL,
-    quantidade INT NOT NULL,
+    quantidade FLOAT NOT NULL,
     peso FLOAT NOT NULL,
     local_armazenamento VARCHAR(50) NOT NULL,
     data_vencimento DATE NOT NULL,

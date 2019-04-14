@@ -41,19 +41,31 @@ class Unidade():
         pass
     def setDadosUnidade(self):
         '''Retorna uma Lista com os dados da Unidade e passa esses dados para a instancia do objeto'''
-        con = self.bd.connectBd()
-        cursor = con.cursor()
-        cursor.execute("""SELECT sigla, descricao 
-                        FROM unidade WHERE id_unidade=%s LIMIT 1""",(self.id_unidade,))
-        result = cursor.fetchone()
-        con.close()
-        self.sigla = result[0]
-        self.descricao_unidade = result[1]
+        try:
+            con = self.bd.connectBd()
+            cursor = con.cursor()
+            cursor.execute("""SELECT sigla, descricao 
+                            FROM unidade WHERE id_unidade=%s LIMIT 1""",(self.id_unidade,))
+            result = cursor.fetchone()
+            #con.close()
+            self.sigla = result[0]
+            self.descricao_unidade = result[1]
+        except Exception as error:
+            print(error)
+        finally:
+            if "con" in locals():
+                con.close()
     def getUnidades(self):
         '''Retorna uma Lista com os nomes das Unidades'''
-        con = self.bd.connectBd()
-        cursor = con.cursor()
-        cursor.execute("""SELECT id_unidade,descricao FROM unidade ORDER BY descricao ASC""")
-        result = cursor.fetchall()
-        con.close()
-        return result
+        try:
+            con = self.bd.connectBd()
+            cursor = con.cursor()
+            cursor.execute("""SELECT id_unidade,descricao FROM unidade ORDER BY descricao ASC""")
+            result = cursor.fetchall()
+            #con.close()
+            return result
+        except Exception as error:
+            print(error)
+        finally:
+            if "con" in locals():
+                con.close()
