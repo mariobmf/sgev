@@ -38,7 +38,7 @@ class ControllerEstoquista(Controller):
         self.sub_lista_produto.show()
     def cadastrarProduto(self):
         '''Cadastra um novo produto no sistema'''
-        if(self.sub_cadastro_produto.verificaCamposVazios()):
+        if(self.sub_cadastro_produto.base_form.verificaCamposVazios()):
             codigo = self.sub_cadastro_produto.edit_codigo.text()
             lote = self.sub_cadastro_produto.edit_lote.text()
             categoria = self.sub_cadastro_produto.cb_categoria.currentData()

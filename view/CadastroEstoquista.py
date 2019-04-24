@@ -8,13 +8,17 @@
 from PyQt5.QtWidgets import (QWidget, QFormLayout,
                             QLineEdit, QPushButton, QLabel, QMessageBox)
 from view.BaseSubWindow import BaseSubWindow
+from view.BaseFormulario import BaseFormulario
 class CadastroEstoquista(BaseSubWindow):
     def __init__(self, parent=None):
-        super().__init__("Cadastro do Estoquista", 300, 500)
+        super().__init__("Cadastro do Estoquista", 300, 300)
         self.parent = parent
+        self.base_form = BaseFormulario(self)
         self.setWidgets()
+        self.base_form.setStyleSheetForm()
         self.setLayoutCadastro()
         self.setActionButton()
+        self.base_form.connectValidaCampo()
     def setWidgets(self):
         '''Cria os Widgets da tela da área do gerente'''
         self.conteudo = QWidget()
@@ -45,3 +49,7 @@ class CadastroEstoquista(BaseSubWindow):
         '''Exibe uma Dialog com a menssagem de sucesso ao cadastro'''
         QMessageBox.about(self,"Sucesso",
                         "Estoquista cadastrado com sucesso! Alterar a senha no primeiro login.")
+    def showMessageErro(self):
+        '''Exibe uma Dialog com a menssagem de Estoquista ja cadastrado'''
+        QMessageBox.about(self,"Erro",
+                        "CPF do Estoquista já cadastrado, verifique a lista de estoquistas cadastrados")

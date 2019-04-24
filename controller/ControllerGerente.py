@@ -20,13 +20,17 @@ class ControllerGerente(Controller):
         self.parent.mdi_area.addSubWindow(self.sub_cadastro_estoquista)
         self.sub_cadastro_estoquista.show()
     def cadastrarEstoquista(self):
-        cpf = self.formataCpf(self.sub_cadastro_estoquista.edit_cpf.text())
-        num_cracha = self.sub_cadastro_estoquista.edit_num_cracha.text()
-        nome = self.sub_cadastro_estoquista.edit_nome.text()
-        sobrenome = self.sub_cadastro_estoquista.edit_sobrenome.text()
-        id_conta = 3#Valor padrão para uma conta do tipo Estoquista
-        estoquista = Usuario(cpf, cpf, num_cracha, nome, sobrenome, id_conta)
-        if(estoquista.cadastraUsuario()):
-            self.sub_cadastro_estoquista.showMessageSucesso()
-            self.parent.mdi_area.removeSubWindow(self.sub_cadastro_estoquista)#remove a subwindow da tela
-            del self.sub_cadastro_estoquista#deleta a instancia da subwindow
+        if(self.sub_cadastro_estoquista.base_form.verificaCamposVazios()):
+            if(self.sub_cadastro_estoquista.base_form.validaCpf(self.sub_cadastro_estoquista.edit_cpf)):
+                cpf = self.formataCpf(self.sub_cadastro_estoquista.edit_cpf.text())
+                num_cracha = self.sub_cadastro_estoquista.edit_num_cracha.text()
+                nome = self.sub_cadastro_estoquista.edit_nome.text()
+                sobrenome = self.sub_cadastro_estoquista.edit_sobrenome.text()
+                id_conta = 3#Valor padrão para uma conta do tipo Estoquista
+                estoquista = Usuario(cpf, cpf, num_cracha, nome, sobrenome, id_conta)
+                if(estoquista.cadastraUsuario()):
+                    self.sub_cadastro_estoquista.showMessageSucesso()
+                    self.parent.mdi_area.removeSubWindow(self.sub_cadastro_estoquista)#remove a subwindow da tela
+                    del self.sub_cadastro_estoquista#deleta a instancia da subwindow
+                else:
+                    self.sub_cadastro_estoquista.showMessageErro()

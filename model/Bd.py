@@ -8,7 +8,8 @@ class Bd():
             'host': 'localhost',
             'port': '3306',
             'database': 'sgev'
-        }    
+        }
+        self.mysql_error = mysql.connector.Error
     def connectBd(self):
         '''Retorna uma conexao com o banco de dados'''
         try:
@@ -19,5 +20,8 @@ class Bd():
                 print("Erro com nome de usuário ou senha")
             elif erro.errno == errorcode.ER_BAD_DB_ERROR:
                 print("Banco de Dados não existe")
+            elif erro.errno == errorcode.CR_CONN_HOST_ERROR:
+                print("Banco de dados Desligado")
             else:
-                print(erro)
+                print("-->ERRO Mysql: ", erro)
+            return False

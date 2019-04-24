@@ -11,6 +11,7 @@ from PyQt5.QtCore import QDate, QRegExp
 from PyQt5.QtGui import QRegExpValidator
 
 from view.BaseSubWindow import BaseSubWindow
+from view.BaseFormulario import BaseFormulario
 
 class CadastroProduto(BaseSubWindow):
     def __init__(self, parent=None, categorias=None, unidades=None):
@@ -20,11 +21,12 @@ class CadastroProduto(BaseSubWindow):
         self.parent = parent
         self.categorias = self.parent.categoria.getCategorias()
         self.unidades = self.parent.unidade.getUnidades()
+        self.base_form = BaseFormulario(self)
         self.setWidgets()
-        self.setStyleSheetForm()
+        self.base_form.setStyleSheetForm()
         self.setLayoutCadastro()
         self.setActionButton()
-        self.connectValidaCampo()
+        self.base_form.connectValidaCampo()
     def setWidgets(self):
         '''Cria os Widgets da tela da área do gerente'''
         self.conteudo = QWidget()
@@ -53,15 +55,7 @@ class CadastroProduto(BaseSubWindow):
         self.edit_data.setCalendarPopup(True)
         self.btn_cadastrar = QPushButton("Cadastrar")
         self.btn_cadastrar.setAutoDefault(True)
-    def setStyleSheetForm(self):
-        self.setStyleSheet("""QLineEdit, QComboBox{border-radius: 3px;
-                                        border-style: solid;
-                                        border-width: 1px;
-                                        border-color: Gray;
-                                        padding: 2px}
-                            QLineEdit:focus, QComboBox:focus{border-color:blue}
-                            QPushButton{padding:5px}
-                            QDateEdit{padding:3px}""")
+    
     def setLayoutCadastro(self):
         '''Posiciona os Widgets da tela da área do gerente'''
         self.layout_form = QFormLayout()
@@ -90,41 +84,8 @@ class CadastroProduto(BaseSubWindow):
         result = QMessageBox.question(self,"Sucesso",
                         "Produto cadastrado com sucesso! \nCadastrar novo produto?", QMessageBox.Yes, QMessageBox.No)
         if(result == QMessageBox.Yes):
-            self.clearLineEdit()
-            self.setStyleSheetForm()
+            self.base_form.clearLineEdit()
+            self.base_form.setStyleSheetForm()
         else:
-            self.clearLineEdit()
+            self.base_form.clearLineEdit()
             return False
-    def clearLineEdit(self):
-        '''Apaga todos os campos do formulario, pode ser usado para fazer um novo cadastro'''
-        edits = self.findChildren(QLineEdit)
-        for edit in edits:
-            edit.clear()
-    def verificaCamposVazios(self):
-        '''verifica se no formulario existem algum campo vazio
-            Retorno:
-                True - caso não tenha nenhum campo vazio
-        '''
-        edits = self.findChildren(QLineEdit)
-        vazio = 0
-        for edit in edits:
-            if(edit.text() == ""):
-                edit.setStyleSheet("border-color: red")
-                vazio += 1
-        if(vazio > 0):
-            return False
-        else:
-            return True
-    def validaCampo(self):
-        '''Muda a cor da borda do QLineEdit se ele estiver vazio'''
-        campo = self.sender()
-        if(campo.text() != ""):
-            campo.setStyleSheet("border-color: green")
-        else:
-            campo.setStyleSheet("border-color: red")
-    def connectValidaCampo(self):
-        '''Conecta todos os campos com a função validaCampo'''
-        edits = self.findChildren(QLineEdit)
-        for edit in edits:
-            edit.textChanged.connect(self.validaCampo)
-                

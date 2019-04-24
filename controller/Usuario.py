@@ -28,8 +28,9 @@ class Usuario(Conta):
             cursor.execute("INSERT INTO usuario (id_conta,cpf,numero_cracha,nome,sobrenome,passwd) VALUES (%s,%s,%s,%s,%s,%s)",values)
             con.commit()
             return True
-        except Exception as error:
-            print("Erro: %s" % error)
+        except self.bd.mysql_error as error:
+            if(error.errno == 1062):
+                return False
         finally:
             if "con" in locals():
                 con.close()
@@ -77,7 +78,6 @@ class Usuario(Conta):
             values=(self.cpf,self.password)
             cursor.execute("SELECT id_usuario FROM usuario WHERE %s=cpf AND %s=passwd LIMIT 1",values)
             result = cursor.fetchone()
-            #con.close()
             if(result == None):
                 return False   
             else:
