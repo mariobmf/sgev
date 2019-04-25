@@ -60,7 +60,7 @@ class Unidade():
         try:
             con = self.bd.connectBd()
             cursor = con.cursor()
-            cursor.execute("""SELECT id_unidade,descricao FROM unidade ORDER BY descricao ASC""")
+            cursor.execute("""SELECT id_unidade,sigla,descricao FROM unidade ORDER BY descricao ASC""")
             result = cursor.fetchall()
             #con.close()
             return result

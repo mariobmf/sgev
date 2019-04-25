@@ -11,19 +11,19 @@ from PyQt5.QtGui import QIcon
 from controller.Controller import Controller
 from view.BaseSubWindow import BaseSubWindow
 
-class ListaUnidade(BaseSubWindow):
+class ListaUnidades(BaseSubWindow):
     def __init__(self, parent=None):
-        super().__init__("Produtos cadastrados no sistema")
+        super().__init__("Unidades cadastrados no sistema")
         self.parent = parent
         self.setTable()
         self.setLayoutTable()
-        super().setMinimumWidth(1050)
+        #super().setMinimumWidth(1050)
         super().setMinimumHeight(500)
     def setTable(self):
         '''Cria os Widgets da tabela'''
-        self.produtos = self.parent.produto.getProdutos()#Pega os produtos salvos no sistema
-        self.table = QTableWidget(len(self.produtos),11)#Cria a tabela com a quantidade de linhas conforme os produtos e 11 colunas
-        header_label = """Ação-Código de Barras-Lote-Categoria-Nome-Descrição-Unidade-Quantidade-Peso(Kg)-Local de Armazenamento-Data de Vencimento"""#Lista usada para formar os titulos da tabela
+        self.unidades = self.parent.unidade.getUnidades()#Pega as unidades salvas no sistema
+        self.table = QTableWidget(len(self.unidades),3)#Cria a tabela com a quantidade de linhas conforme os unidades e 11 colunas
+        header_label = """Ação-Sigla-Descrição"""#Lista usada para formar os titulos da tabela
         self.table.setHorizontalHeaderLabels(header_label.split('-'))#Interpreta a lista de titulos e seta os titulos da tabela
         self.setValuesTable()#Coloca os valores na tabela
         self.table.resizeColumnsToContents()#As colunas ficam com a largura do tamanho do conteudo
@@ -39,21 +39,21 @@ class ListaUnidade(BaseSubWindow):
         '''Preenche a tabela usando dois laços de repetição(um para linhas e outro para colunas)'''
         linha = 0
         coluna = 1
-        for produto in self.produtos:#Separa as linhas dos produtos
-            self.table.setCellWidget(linha, 0, ButtonGroup(self, produto[0], linha))#Coloca os botões na celula e passa o id do produto
-            for item in produto[1:]:#Separa cada coluna da linha(da segunda coluna em diante)
+        for unidade in self.unidades:#Separa as linhas dos unidades
+            self.table.setCellWidget(linha, 0, ButtonGroup(self, unidade[0], linha))#Coloca os botões na celula e passa o id do unidade
+            for item in unidade[1:]:#Separa cada coluna da linha(da segunda coluna em diante)
                 self.table.setItem(linha, coluna, QTableWidgetItem(str(item)))
                 coluna += 1
             coluna = 1
             linha += 1
     def updateTable(self):
         '''Atualiza as linhas da tabela'''
-        self.produtos = self.parent.produto.getProdutos()#Pega os produtos salvos no sistema
+        self.unidades = self.parent.unidade.getProdutos()#Pega os unidades salvos no sistema
         self.table.clearContents()
-        if(len(self.produtos) > self.table.rowCount()):
-            self.table.insertRow(int(len(self.produtos) - self.table.rowCount()))
-        elif(len(self.produtos) < self.table.rowCount()):
-            self.table.removeRow(int(self.table.rowCount() - len(self.produtos)))
+        if(len(self.unidades) > self.table.rowCount()):
+            self.table.insertRow(int(len(self.unidades) - self.table.rowCount()))
+        elif(len(self.unidades) < self.table.rowCount()):
+            self.table.removeRow(int(self.table.rowCount() - len(self.unidades)))
         self.setValuesTable()
 #------Classe usada para gerar dois botões dentro de uma celula------
 class ButtonGroup(QWidget):
@@ -77,14 +77,14 @@ class ButtonGroup(QWidget):
         self.layout_btn_group.addWidget(self.btn_delete,1)
         self.setLayout(self.layout_btn_group)
     def actionButtonEdit(self):
-        '''Aciona o metodo editProduto e passa o id do produto'''
+        '''Aciona o metodo editProduto e passa o id do unidade'''
         #print("Id:",self.id_produto," Linha:",self.linha)
         self.parent.parent.editProduto(self.id_produto)#primeiro parent(class ListaProdutos) e o segundo parent(AreaEstoquista)
     def actionButtonView(self):
-        '''Aciona o metodo viewProduto e passa o id do produto'''
+        '''Aciona o metodo viewProduto e passa o id do unidade'''
         #print("Id:",self.id_produto," Linha:",self.linha)
         self.parent.parent.viewProduto(self.id_produto)#primeiro parent(class ListaProdutos) e o segundo parent(AreaEstoquista)
     def actionButtonDelete(self):
-        '''Aciona o metodo deleteProduto e passa o id do produto'''
+        '''Aciona o metodo deleteProduto e passa o id do unidade'''
         self.parent.parent.deleteProduto(self.id_produto)#primeiro parent(class ListaProdutos) e o segundo parent(AreaEstoquista)
         

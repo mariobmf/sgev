@@ -102,3 +102,5 @@ class Menu():
         menu_produtos.addAction(act_lista_categoria)
         act_cadastra_produto.triggered.connect(self.parent.controller.showCadastroProduto)
         act_lista_produto.triggered.connect(self.parent.controller.showListaProdutos)
+        act_cadastra_unidade.triggered.connect(self.parent.controller.showCadastroUnidade)
+        act_lista_unidade.triggered.connect(self.parent.controller.showListaUnidades)

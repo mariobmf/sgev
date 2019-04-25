@@ -12,7 +12,9 @@ from controller.Categoria import Categoria
 from controller.Unidade import Unidade
 # ----Import View
 from view.CadastroProduto import CadastroProduto
+from view.CadastroUnidade import CadastroUnidade
 from view.ListaProdutos import ListaProdutos
+from view.ListaUnidades import ListaUnidades
 from view.EditProduto import EditProduto
 from view.ViewProduto import ViewProduto
 
@@ -24,18 +26,28 @@ class ControllerEstoquista(Controller):
         self.produto = Produto(False)
         self.categoria = Categoria(False)
         self.unidade = Unidade(False)
+    def showHome(self):
+        self.parent.conteudo_central.setCurrentWidget(self.parent.home_estoquista)
     def showCadastroProduto(self):
         '''Exibe a subwindow de cadastro de produto'''
         self.sub_cadastro_produto = CadastroProduto(self)
         self.parent.mdi_area.addSubWindow(self.sub_cadastro_produto)
         self.sub_cadastro_produto.show()
-    def showHome(self):
-        self.parent.conteudo_central.setCurrentWidget(self.parent.home_estoquista)
     def showListaProdutos(self):
         '''Exibe a subwindow de lista de produto'''
         self.sub_lista_produto = ListaProdutos(self)
         self.parent.mdi_area.addSubWindow(self.sub_lista_produto)
         self.sub_lista_produto.show()
+    def showCadastroUnidade(self):
+        '''Exibe a subwindow de cadastro de unidade'''
+        self.sub_cadastro_unidade = CadastroUnidade(self)
+        self.parent.mdi_area.addSubWindow(self.sub_cadastro_unidade)
+        self.sub_cadastro_unidade.show()
+    def showListaUnidades(self):
+        '''Exibe a subwindow de lista de unidades'''
+        self.sub_lista_unidade = ListaUnidades(self)
+        self.parent.mdi_area.addSubWindow(self.sub_lista_unidade)
+        self.sub_lista_unidade.show()        
     def cadastrarProduto(self):
         '''Cadastra um novo produto no sistema'''
         if(self.sub_cadastro_produto.base_form.verificaCamposVazios()):

@@ -2,7 +2,7 @@
 # Autor: Mário Fernandes
 # 06/02/2019
 # SISTEMA DE GESTÃO DE ESTOQUE E VENCIMENTO
-# ---Formulario para cadastro de produto---
+# ---Formulario para cadastro de unidade---
 
 # --- Import PyQt5
 from PyQt5.QtWidgets import (QWidget, QFormLayout, QLineEdit, 
@@ -13,7 +13,7 @@ from PyQt5.QtGui import QRegExpValidator
 from view.BaseSubWindow import BaseSubWindow
 from view.BaseFormulario import BaseFormulario
 
-class CadastroProduto(BaseSubWindow):
+class CadastroUnidade(BaseSubWindow):
     def __init__(self, parent=None, categorias=None, unidades=None):
         '''Inicia a classe com os seguintes parametros:
             -parent: classe que instanciou esta classe'''
@@ -45,7 +45,7 @@ class CadastroProduto(BaseSubWindow):
         self.edit_quantidade.setValidator(QRegExpValidator(QRegExp("\-?\d+\.\d+")))
         self.cb_unidade = QComboBox()
         #Cria o selectbox e insere os valores do banco de dados no mesmo
-        for id_unidade, sigla, unidade in self.unidades:
+        for id_unidade, unidade in self.unidades:
             self.cb_unidade.addItem(unidade, id_unidade)
         self.edit_peso = QLineEdit()
         self.edit_peso.setValidator(QRegExpValidator(QRegExp("\-?\d+\.\d+")))
