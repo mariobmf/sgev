@@ -4,7 +4,7 @@ class Bd():
     def __init__(self):
         self.config = {
             'user': 'devmario',
-            'password': 'd3vm4r10',
+            'password': '###',
             'host': 'localhost',
             'port': '3306',
             'database': 'sgev'
