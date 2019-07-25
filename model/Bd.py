@@ -3,7 +3,7 @@ from mysql.connector import errorcode
 class Bd():
     def __init__(self):
         self.config = {
-            'user': 'devmario',
+            'user': 'teste',
             'password': '###',
             'host': 'localhost',
             'port': '3306',
